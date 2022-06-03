@@ -54,8 +54,12 @@
 
 		<div>
 			<h2>Manage users</h2>
+			<a th:href="@{/users/new}">Create new user</a>
 		</div>
 
+		<div th:if="${message!=null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
 
 		<div>
 			<table class="table table-responsive-xl table-bordered table-striped table-hover">
