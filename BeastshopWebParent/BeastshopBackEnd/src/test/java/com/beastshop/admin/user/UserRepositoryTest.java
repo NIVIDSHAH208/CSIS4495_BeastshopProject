@@ -115,4 +115,14 @@ public class UserRepositoryTest {
 		
 	}
 	
+	
+	//Test method to check the uniqueness of email
+	//find user having specific email
+	@Test
+	public void testGetUserByEmail() {
+		String emailString = "anjali@anjali.com";
+		User user= repo.getUserByEmail(emailString);
+		assertThat(user).isNotNull();
+	}
+	
 }

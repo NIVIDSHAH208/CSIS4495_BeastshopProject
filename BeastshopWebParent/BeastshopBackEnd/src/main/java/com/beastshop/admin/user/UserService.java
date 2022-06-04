@@ -43,4 +43,11 @@ public class UserService {
 		user.setPassword(encodedPasswordString);
 	}
 	
+	//method to check the uniqueness of the user
+	public boolean isEmailUnique(String email) {
+		//if user exists then it will return false, otherwise it will return true
+		User userByEmail =userRepo.getUserByEmail(email);
+		return userByEmail==null;
+	}
+	
 }
