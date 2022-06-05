@@ -8,6 +8,9 @@
 
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -58,11 +61,11 @@
 		</div>
 
 		<div th:if="${message!=null}" class="alert alert-success text-center">
-			[[${message}]]
-		</div>
+			[[${message}]]</div>
 
 		<div>
-			<table class="table table-responsive-xl table-bordered table-striped table-hover">
+			<table
+				class="table table-responsive-xl table-bordered table-striped table-hover">
 				<thead class="table-success">
 					<tr>
 						<th>User ID</th>
@@ -85,14 +88,21 @@
 					<!-- Using thymeleaf to iterate through all users -->
 					<tr th:each="user:${listUsers}">
 						<td>[[${user.id}]]</td>
-						<td></td>
+						<td><span class="fas fa-portrait fa-3x icon-dark"></span></td>
 						<td>[[${user.email}]]</td>
 						<td>[[${user.firstname}]]</td>
 						<td>[[${user.lastname}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td>[[${user.enabled}]]</td>
-						<td>Edit &nbsp; Delete</td>
-					
+
+
+						<td><a th:if="${user.enabled == false}" href=""
+							class="fas fa-check-circle fa-2x icon-dark"></a> <a
+							th:if="${user.enabled == true}" href=""
+							class="fas fa-check-circle fa-2x icon-green"></a></td>
+
+						<td><a href="" class="fas fa-edit fa-2x icon-green"></a>
+							&nbsp; <a href="" class="fa-solid fa-trash-can fa-2x icon-red"></a></td>
+
 					</tr>
 
 				</tbody>
