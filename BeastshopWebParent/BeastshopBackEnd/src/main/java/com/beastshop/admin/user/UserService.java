@@ -3,6 +3,8 @@ package com.beastshop.admin.user;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.beastshop.common.entity.Role;
 import com.beastshop.common.entity.User;
 
 @Service
+@Transactional
 public class UserService {
 
 	@Autowired
@@ -89,7 +92,13 @@ public class UserService {
 			userRepo.deleteById(id);
 		}
 	}
+	
+	//Update User enable status
+	public void updateUserEnableStatus(Integer id, boolean enable) {
+		userRepo.updateEnabledStatus(id, enable);
+	}
 
+	
 	// Method to get the user by id in order to update
 	public User getById(Integer id) throws UserNotFoundException {
 
