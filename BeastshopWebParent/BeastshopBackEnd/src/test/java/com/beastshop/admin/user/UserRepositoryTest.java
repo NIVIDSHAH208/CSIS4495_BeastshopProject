@@ -115,7 +115,6 @@ public class UserRepositoryTest {
 		
 	}
 	
-	
 	//Test method to check the uniqueness of email
 	//find user having specific email
 	@Test
@@ -124,5 +123,16 @@ public class UserRepositoryTest {
 		User user= repo.getUserByEmail(emailString);
 		assertThat(user).isNotNull();
 	}
+	
+	//Test method to get the count by Id
+	@Test
+	public void testCountById() {
+		Integer id=3;
+		Long count = repo.countById(id);
+		assertThat(count).isNotNull().isGreaterThan(0);
+	}
+	
+	
+	
 	
 }
