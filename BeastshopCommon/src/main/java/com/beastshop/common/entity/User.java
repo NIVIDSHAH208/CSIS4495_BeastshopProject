@@ -1,5 +1,6 @@
 package com.beastshop.common.entity;
 
+import java.beans.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -124,6 +125,15 @@ public class User {
 	
 	public void addRole(Role role) {
 		this.roles.add(role);
+	}
+	
+	@Transient
+	public String getPhotosImagePath() {
+		if(id == null || photos == null) {
+			return "/images/default-user.png";
+		}
+		
+		return "/user-photos/"+this.id+"/"+this.photos;
 	}
 
 	@Override
