@@ -20,6 +20,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.core.support.RepositoryFragment.ImplementedRepositoryFragment;
 import org.springframework.test.annotation.Rollback;
 
@@ -28,7 +31,7 @@ import com.beastshop.common.entity.User;
 
 import net.bytebuddy.asm.Advice.This;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class UserRepositoryTest {
@@ -141,6 +144,20 @@ public class UserRepositoryTest {
 	public void testEnableUser() {
 		Integer id=13;
 		repo.updateEnabledStatus(id, true);
+	}
+	
+	//We want to test the pagination
+	@Test
+	public void testListFirstPage() {
+		int pageNum=0;
+		int pageSize=4;
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		Page<User> page=repo.findAll(pageable);
+		//get the content of the page
+		List<User> listUsers=page.getContent();
+		listUsers.forEach(user->System.out.println(user));
+		
+		assertThat(listUsers.size()).isEqualTo(pageSize);
 	}
 	
 	
