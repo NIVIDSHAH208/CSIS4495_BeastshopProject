@@ -28,7 +28,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String listFirstPage(Model model) {
-		return listByPage(1, model);
+		return listByPage(1, model, "firstname", "asc");
 	}
 
 	@GetMapping("/users/new")
@@ -41,60 +41,68 @@ public class UserController {
 		model.addAttribute("pageTitle", "Create new User");
 		return "user_form";
 	}
-	
+
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name ="pageNum") int pageNum, Model model) {
-		Page<User> pageUser=service.listByPage(pageNum);
-		List<User> listUsers=pageUser.getContent();
-		//Printing to check the page and user sizes
+	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
+		System.out.println("Sort field: "+sortField+" Sort Dir: "+sortDir);
+		Page<User> pageUser = service.listByPage(pageNum, sortField, sortDir);
+		List<User> listUsers = pageUser.getContent();
+		// Printing to check the page and user sizes
 //		System.out.println("Page number is: "+pageNum);
 //		System.out.println("Total element are: "+pageUser.getTotalElements());
 //		System.out.println("Total Pages are: "+pageUser.getTotalPages());
-		long startCount = (pageNum-1)*UserService.USERS_PER_PAGE+1;
-		long endCount = startCount +UserService.USERS_PER_PAGE-1;
-		
-		if(endCount>pageUser.getTotalElements()) {
+		long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
+		long endCount = startCount + UserService.USERS_PER_PAGE - 1;
+
+		if (endCount > pageUser.getTotalElements()) {
 			endCount = pageUser.getTotalElements();
 		}
+		String reverseSortDir= sortDir.equals("asc")?"desc":"asc";
 		model.addAttribute("totalPages", pageUser.getTotalPages());
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalItems",pageUser.getTotalElements());
-		model.addAttribute("listUsers",listUsers);
+		model.addAttribute("totalItems", pageUser.getTotalElements());
+		model.addAttribute("listUsers", listUsers);
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		model.addAttribute("reverseSortDir", reverseSortDir);
+
 		return "users";
-		
+
 	}
 
 	@PostMapping("/users/save")
-	public String saveUser(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+	public String saveUser(User user, RedirectAttributes redirectAttributes,
+			@RequestParam("image") MultipartFile multipartFile) throws IOException {
 //		System.out.println(user);
 //		System.out.println(multipartFile.getOriginalFilename());
-		if(!multipartFile.isEmpty()) {
-			
+		if (!multipartFile.isEmpty()) {
+
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			user.setPhotos(fileName);	
+			user.setPhotos(fileName);
 			User savedUser = service.save(user);
-			String uploadDir ="user-photos/"+savedUser.getId();
+			String uploadDir = "user-photos/" + savedUser.getId();
 			FileUploadUtil.cleanDirectory(uploadDir);
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}else {
-			if(user.getPhotos().isEmpty()) {
+		} else {
+			if (user.getPhotos().isEmpty()) {
 				user.setPhotos(null);
 			}
 			service.save(user);
 		}
 
-		
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
 		return "redirect:/users";
 	}
-	
+
 	@GetMapping("/users/delete/{id}")
-	public String deleteUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+	public String deleteUser(@PathVariable(name = "id") Integer id, Model model,
+			RedirectAttributes redirectAttributes) {
 		try {
 			service.delete(id);
-			redirectAttributes.addFlashAttribute("message", "User ID: "+id+" has been deleted successfully!");
+			redirectAttributes.addFlashAttribute("message", "User ID: " + id + " has been deleted successfully!");
 		} catch (UserNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message", ex.getMessage());
 		}
@@ -116,15 +124,15 @@ public class UserController {
 		}
 
 	}
-	
+
 	@GetMapping("/users/{id}/enabled/{status}")
-	public String updateUserEnabledStatus(@PathVariable("id") Integer id, @PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) {
+	public String updateUserEnabledStatus(@PathVariable("id") Integer id, @PathVariable("status") boolean enabled,
+			RedirectAttributes redirectAttributes) {
 		service.updateUserEnableStatus(id, enabled);
-		String status = enabled?"Enabled":"Disabled";
-		String userMessage = "The user Id: "+id+" has been "+status;
-		redirectAttributes.addFlashAttribute("message",userMessage);
+		String status = enabled ? "Enabled" : "Disabled";
+		String userMessage = "The user Id: " + id + " has been " + status;
+		redirectAttributes.addFlashAttribute("message", userMessage);
 		return "redirect:/users";
 	}
-	
-	
+
 }
