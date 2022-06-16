@@ -47,7 +47,7 @@ public class UserController {
 	@GetMapping("/users/page/{pageNum}")
 	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
 			@Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
-		System.out.println("Sort field: "+sortField+" Sort Dir: "+sortDir);
+//		System.out.println("Sort field: "+sortField+" Sort Dir: "+sortDir);
 		Page<User> pageUser = service.listByPage(pageNum, sortField, sortDir,keyword);
 		List<User> listUsers = pageUser.getContent();
 		// Printing to check the page and user sizes

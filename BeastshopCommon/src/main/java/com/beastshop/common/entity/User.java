@@ -127,6 +127,7 @@ public class User {
 		this.roles.add(role);
 	}
 	
+	//We use transient annotation so hibernate won't mark this to database
 	@Transient
 	public String getPhotosImagePath() {
 		if(id == null || photos == null) {
@@ -135,6 +136,13 @@ public class User {
 		
 		return "/user-photos/"+this.id+"/"+this.photos;
 	}
+	
+	@Transient
+	public String getFullName() {
+		return firstname+" "+lastname;
+	}
+	
+	
 
 	@Override
 	public String toString() {
