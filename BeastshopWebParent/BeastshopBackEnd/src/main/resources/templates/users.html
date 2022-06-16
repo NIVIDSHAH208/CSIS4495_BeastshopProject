@@ -57,9 +57,9 @@
 
 		<div>
 			<h2>Manage users</h2>
-			<a th:href="@{/users/new}">Create new user</a>
-			&nbsp;|&nbsp;
-			<a th:href="@{/users/export/csv}">Export to CSV</a>
+			<a th:href="@{/users/new}">Create new user</a> &nbsp;|&nbsp; <a
+				th:href="@{/users/export/csv}">Export to CSV</a> &nbsp;|&nbsp; <a
+				th:href="@{/users/export/excel}">Export to Excel</a>
 		</div>
 
 		<div th:if="${message!=null}" class="alert alert-success text-center">
@@ -141,7 +141,7 @@
 				<ul class="pagination justify-content-center">
 					<li th:class="${currentPage>1?'page-item':'page-item disabled'}"><a
 						th:replace="fragments::page_link(1, 'First')"></a></li>
-						
+
 					<li th:class="${currentPage>1?'page-item':'page-item disabled'}"><a
 						th:replace="fragments::page_link(${currentPage-1}, 'Previous')"></a></li>
 
@@ -152,7 +152,7 @@
 					<li
 						th:class="${currentPage>=totalPages?'page-item disabled':'page-item'}"><a
 						th:replace="fragments::page_link(${currentPage+1}, 'Next')"></a></li>
-						
+
 					<li
 						th:class="${currentPage>=totalPages?'page-item disabled':'page-item'}"><a
 						th:replace="fragments::page_link(${totalPages}, 'Last')"></a></li>
