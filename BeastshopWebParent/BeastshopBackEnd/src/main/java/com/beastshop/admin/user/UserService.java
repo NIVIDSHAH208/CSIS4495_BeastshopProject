@@ -33,7 +33,8 @@ public class UserService {
 
 	// Method to return the list of users
 	public List<User> listAll() {
-		return (List<User>) userRepo.findAll();
+		//We can also change the field and sorting type based on our requirements
+		return (List<User>) userRepo.findAll(Sort.by("firstname").ascending());
 	}
 	
 	//method returns page of user objects

@@ -3,6 +3,8 @@ package com.beastshop.admin.user;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -75,6 +77,7 @@ public class UserController {
 
 	}
 
+	//Method to save the user to the database
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
@@ -105,6 +108,8 @@ public class UserController {
 		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword="+firstPartofEmail;
 	}
 
+	
+	//Methods to delete and edit the users
 	@GetMapping("/users/delete/{id}")
 	public String deleteUser(@PathVariable(name = "id") Integer id, Model model,
 			RedirectAttributes redirectAttributes) {
@@ -133,6 +138,7 @@ public class UserController {
 
 	}
 
+	//Method to enable or disable the user on click
 	@GetMapping("/users/{id}/enabled/{status}")
 	public String updateUserEnabledStatus(@PathVariable("id") Integer id, @PathVariable("status") boolean enabled,
 			RedirectAttributes redirectAttributes) {
@@ -142,5 +148,14 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("message", userMessage);
 		return "redirect:/users";
 	}
-
+	
+	
+	//New method to handle the export to CSV
+	@GetMapping("/users/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<User> listAllUsers=service.listAll();
+		UserCsvExporter exporter = new UserCsvExporter();
+		exporter.export(listAllUsers, response);
+	}
+	
 }
