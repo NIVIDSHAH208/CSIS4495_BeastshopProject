@@ -65,12 +65,13 @@
 
 		<div>
 			<form th:action="@{/users/page/1}" class="form-inline m-3">
-			<input type="hidden" name="sortField" th:value="${sortField}" />
-			<input type="hidden" name="sortDir" th:value="${sortDir}" />
-			Filter:&nbsp;  <input type="search" th:value="${keyword}" name="keyword" class="form-control" required/>
-			&nbsp;&nbsp;
-			<input type="submit" value="Search" class="btn btn-primary"/> &nbsp;&nbsp;
-			<input type="button" value="Clear" onclick="clearFilter()" class="btn btn-secondary"/>
+				<input type="hidden" name="sortField" th:value="${sortField}" /> <input
+					type="hidden" name="sortDir" th:value="${sortDir}" />
+				Filter:&nbsp; <input type="search" th:value="${keyword}"
+					name="keyword" class="form-control" required /> &nbsp;&nbsp; <input
+					type="submit" value="Search" class="btn btn-primary" />
+				&nbsp;&nbsp; <input type="button" value="Clear"
+					onclick="clearFilter()" class="btn btn-secondary" />
 			</form>
 		</div>
 
@@ -79,44 +80,13 @@
 				class="table table-responsive-xl table-bordered table-striped table-hover">
 				<thead class="table-success">
 					<tr>
-						<th><a th:if="${sortField!='id'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=id&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">User
-								ID</a> <a th:if="${sortField=='id'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=id&sortDir='+${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">User
-								ID</a> <span th:if="${sortField=='id'}"
-							th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
-
+						<th th:replace="fragments::column_link('id', 'User Id')" />
 						<th>Photos</th>
-						<th><a th:if="${sortField!='email'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=email&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Email</a>
-							<a th:if="${sortField=='email'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=email&sortDir='+${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">Email</a>
-							<span th:if="${sortField=='email'}"
-							th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
-
-						<th><a th:if="${sortField!='firstname'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=firstname&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">First
-								Name</a> <a th:if="${sortField=='firstname'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=firstname&sortDir='+${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">First
-								Name</a> <span th:if="${sortField=='firstname'}"
-							th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
-
-						<th><a th:if="${sortField!='lastname'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=lastname&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Last
-								Name</a> <a th:if="${sortField=='lastname'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=lastname&sortDir='+${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">Last
-								Name</a> <span th:if="${sortField=='lastname'}"
-							th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
-
+						<th th:replace="fragments::column_link('email', 'Email')" />
+						<th th:replace="fragments::column_link('firstname', 'First Name')" />
+						<th th:replace="fragments::column_link('lastname', 'Last Name')" />
 						<th>Roles</th>
-
-						<th><a th:if="${sortField!='enabled'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=enabled&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Enabled</a>
-							<a th:if="${sortField=='enabled'}" class="text-dark"
-							th:href="@{'/users/page/'+${currentPage}+'?sortField=enabled&sortDir='+${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">Enabled</a>
-							<span th:if="${sortField=='enabled'}"
-							th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
-
+						<th th:replace="fragments::column_link('enabled', 'Enabled')" />
 						<th></th>
 					</tr>
 				</thead>
@@ -168,20 +138,22 @@
 			<nav>
 				<ul class="pagination justify-content-center">
 					<li th:class="${currentPage>1?'page-item':'page-item disabled'}"><a
-						class="page-link" th:href="@{'/users/page/1?sortField='+${sortField}+'&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">First</a></li>
+						th:replace="fragments::page_link(1, 'First')"></a></li>
+						
 					<li th:class="${currentPage>1?'page-item':'page-item disabled'}"><a
-						class="page-link" th:href="@{'/users/page/'+${currentPage-1}+'?sortField='+${sortField}+'&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Previous</a></li>
+						th:replace="fragments::page_link(${currentPage-1}, 'Previous')"></a></li>
 
 					<li th:class="${currentPage!=i?'page-tem':'page-item active'}"
 						th:each="i:${#numbers.sequence(1,totalPages)}"><a
-						class="page-link" th:href="@{'/users/page/'+${i}+'?sortField='+${sortField}+'&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${i}]]</a></li>
+						th:replace="fragments::page_link(${i}, ${i})"></a></li>
 
 					<li
 						th:class="${currentPage>=totalPages?'page-item disabled':'page-item'}"><a
-						class="page-link" th:href="@{'/users/page/'+${currentPage+1}+'?sortField='+${sortField}+'&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Next</a></li>
+						th:replace="fragments::page_link(${currentPage+1}, 'Next')"></a></li>
+						
 					<li
 						th:class="${currentPage>=totalPages?'page-item disabled':'page-item'}"><a
-						class="page-link" th:href="@{'/users/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDir}+${keyword!=null?'&keyword='+keyword:''}}">Last</a></li>
+						th:replace="fragments::page_link(${totalPages}, 'Last')"></a></li>
 				</ul>
 			</nav>
 		</div>
@@ -225,11 +197,10 @@
 								$("#deleteModal").modal();
 							})
 				});
-		
-		function clearFilter(){
-			window.location="[[@{/users}]]"
+
+		function clearFilter() {
+			window.location = "[[@{/users}]]"
 		}
-		
 	</script>
 </body>
 </html>
