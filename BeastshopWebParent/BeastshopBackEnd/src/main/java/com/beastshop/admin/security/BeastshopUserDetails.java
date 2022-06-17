@@ -68,5 +68,10 @@ public class BeastshopUserDetails implements UserDetails {
 		// TODO Auto-generated method stub
 		return user.isEnabled();
 	}
+	
+	
+	public String getFullName() {
+		return this.user.getFirstname()+" "+this.user.getLastname();
+	}
 
 }
