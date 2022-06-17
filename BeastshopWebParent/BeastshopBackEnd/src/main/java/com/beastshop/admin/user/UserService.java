@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,11 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	//method to return user object by email
+	public User getByEmail(String email) {
+		return userRepo.getUserByEmail(email);
+	}
 
 	// Method to return the list of users
 	public List<User> listAll() {
@@ -47,6 +53,21 @@ public class UserService {
 		}
 		
 		return userRepo.findAll(pageable);
+	}
+	
+	//Method to retreive details of currently logged in user
+	public User updateAccount(User userInForm) {
+		User userInDatabase = userRepo.findById(userInForm.getId()).get();
+		if(!userInDatabase.getPassword().isEmpty()) {
+			userInDatabase.setPassword(userInForm.getPassword());
+			encodePassword(userInDatabase);
+		}
+		if(userInForm.getPhotos()!=null) {
+			userInDatabase.setPhotos(userInForm.getPhotos());
+		}
+		userInDatabase.setFirstname(userInForm.getFirstname());
+		userInDatabase.setLastname(userInForm.getLastname());
+		return userRepo.save(userInDatabase);
 	}
 	
 
@@ -129,4 +150,7 @@ public class UserService {
 		}
 
 	}
+	
+	
+	
 }

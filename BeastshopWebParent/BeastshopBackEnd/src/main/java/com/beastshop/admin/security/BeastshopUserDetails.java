@@ -73,5 +73,13 @@ public class BeastshopUserDetails implements UserDetails {
 	public String getFullName() {
 		return this.user.getFirstname()+" "+this.user.getLastname();
 	}
+	
+	public void setFirstName(String firstName) {
+		this.user.setFirstname(firstName);
+	}
+	
+	public void setLastName(String lastName) {
+		this.user.setLastname(lastName);
+	}
 
 }

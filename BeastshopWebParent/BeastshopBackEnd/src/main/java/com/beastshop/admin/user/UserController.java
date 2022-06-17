@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.FileUploadUtil;
+import com.beastshop.admin.user.export.UserCsvExporter;
+import com.beastshop.admin.user.export.UserExcelExporter;
+import com.beastshop.admin.user.export.UserPDFExporter;
 import com.beastshop.common.entity.Role;
 import com.beastshop.common.entity.User;
 
