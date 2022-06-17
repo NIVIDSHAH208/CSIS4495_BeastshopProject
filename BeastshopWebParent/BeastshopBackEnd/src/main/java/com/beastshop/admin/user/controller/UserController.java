@@ -1,4 +1,4 @@
-package com.beastshop.admin.user;
+package com.beastshop.admin.user.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.FileUploadUtil;
+import com.beastshop.admin.user.UserNotFoundException;
+import com.beastshop.admin.user.UserService;
 import com.beastshop.admin.user.export.UserCsvExporter;
 import com.beastshop.admin.user.export.UserExcelExporter;
 import com.beastshop.admin.user.export.UserPDFExporter;
@@ -44,7 +46,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles", listRoles);
 		model.addAttribute("pageTitle", "Create new User");
-		return "user_form";
+		return "users/user_form";
 	}
 
 	@GetMapping("/users/page/{pageNum}")
@@ -76,7 +78,7 @@ public class UserController {
 		model.addAttribute("keyword", keyword);
 
 
-		return "users";
+		return "users/users";
 
 	}
 
@@ -133,7 +135,7 @@ public class UserController {
 			model.addAttribute("listRoles", listRoles);
 			model.addAttribute("user", user);
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message", ex.getMessage());
 			return "redirect:/users";

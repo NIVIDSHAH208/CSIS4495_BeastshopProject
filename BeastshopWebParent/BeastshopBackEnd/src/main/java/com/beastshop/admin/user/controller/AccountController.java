@@ -1,4 +1,4 @@
-package com.beastshop.admin.user;
+package com.beastshop.admin.user.controller;
 
 import java.io.IOException;
 
@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.FileUploadUtil;
 import com.beastshop.admin.security.BeastshopUserDetails;
+import com.beastshop.admin.user.UserService;
 import com.beastshop.common.entity.User;
 
 @Controller
@@ -27,7 +28,7 @@ public class AccountController {
 		String email=loggedUserDetails.getUsername();
 		User user=service.getByEmail(email);
 		model.addAttribute("user",user);
-		return "account_form";
+		return "users/account_form";
 	}
 	
 	//Method to save the user to the database
