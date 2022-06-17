@@ -1,50 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-<title>Home-Beastshop Admin</title>
-
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
-
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-</head>
+<head th:replace="fragments::page_head('Users-Beast shop Admin')"></head>
 <body>
 	<div class="container-fluid">
-		<div>
-			<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-				<a class="navbar-brand" th:href="@{/}"> <img
-					th:src="@{/images/beast.jpg}" style="width: 180px; height: 50px;" /></a>
-
-				<button class="navbar-toggler" type="button" data-toggle="collapse"
-					data-target="#topNavBar">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="topNavBar">
-					<ul class="navbar-nav">
-						<li th:replace="fragments::page_li('users', 'Users')"></li>
-						<li th:replace="fragments::page_li('categories', 'Categories')"></li>
-						<li th:replace="fragments::page_li('brands', 'Brands')"></li>
-						<li th:replace="fragments::page_li('products', 'Products')"></li>
-						<li th:replace="fragments::page_li('customers', 'Customers')"></li>
-						<li th:replace="fragments::page_li('orders', 'Orders')"></li>
-						<li th:replace="fragments::page_li('shipping', 'Shipping')"></li>
-						<li th:replace="fragments::page_li('report', 'Sales Report')"></li>
-						<li th:replace="fragments::page_li('article', 'Articles')"></li>
-						<li th:replace="fragments::page_li('menus', 'Menus')"></li>
-						<li th:replace="fragments::page_li('settings', 'Settings')"></li>
-					</ul>
-				</div>
-			</nav>
-		</div>
-
+		<div th:replace="navigation::menu"></div>
 		<div>
 			<h2>Manage users</h2>
 			<a th:href="@{/users/new}"
@@ -81,7 +40,8 @@
 				class="table table-responsive-xl table-bordered table-striped table-hover">
 				<thead class="table-success">
 					<tr>
-						<th class="hideable-column"><th th:replace="fragments::column_link('id', 'User Id','tag')" /></th>
+						<th class="hideable-column">
+						<th th:replace="fragments::column_link('id', 'User Id','tag')" /></th>
 
 
 
@@ -217,9 +177,8 @@
 			</div>
 		</div>
 
-		<div class="text-center">
-			<p>Beastshop Control panel-Copyright &copy; Beastshop</p>
-		</div>
+		<div th:replace="fragments::footer"></div>
+
 	</div>
 	<script type="text/javascript">
 		$(document).ready(
