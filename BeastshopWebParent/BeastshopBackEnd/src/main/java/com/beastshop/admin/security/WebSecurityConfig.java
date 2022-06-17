@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
-	public UserDetailsService UserDetailsService() {
+	public UserDetailsService userDetailsService() {
 		return new BeastshopUserDetailsService();
 	}
 	
@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	//We are telling that authentication will be based on the database
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(UserDetailsService());
+		authProvider.setUserDetailsService(userDetailsService());
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
@@ -52,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.loginPage("/login")
 					.usernameParameter("email")
 					.permitAll()
-					.and().logout().permitAll();
+					.and().logout().permitAll().and().rememberMe().key("AbcdEfghIjkLmnOp-1234567890")
+					.tokenValiditySeconds(7*24*60*60);
 
 	}
 
