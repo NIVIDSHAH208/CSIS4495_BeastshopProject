@@ -10,7 +10,7 @@
 			Welcome <a sec:authentication="principal.fullName"
 				th:href="@{/account}"></a>&nbsp;
 				<span sec:authentication="principal.authorities"></span>
-			<div class="dropdown-menu"></div>
+			
 
 			<div th:replace="fragments::footer"></div>
 		</div>
