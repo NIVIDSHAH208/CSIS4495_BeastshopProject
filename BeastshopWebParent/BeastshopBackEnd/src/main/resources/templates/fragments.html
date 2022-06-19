@@ -12,7 +12,8 @@
 <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/common.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<th th:fragment="column_link(fieldName, columnLabel, removeTag)"
@@ -29,6 +30,22 @@
 	<div th:fragment="footer" class="text-center m-3">
 		<p>Beastshop Control panel-Copyright &copy; Beastshop</p>
 	</div>
+
+
+	<div th:fragment="category_status"><a th:if="${cat.enabled == false}"
+		th:href="@{'/categories/'+${cat.id}+'/enabled/true'}"
+		class="fas fa-circle fa-2x icon-dark" title="Click to Enable"></a> <a
+		th:if="${cat.enabled == true}"
+		th:href="@{'/categories/'+${cat.id}+'/enabled/false'}"
+		class="fas fa-check-circle fa-2x icon-green" title="Click to Disable"></a></div>
+
+	<div th:fragment="category_actions"><a th:href="@{'/categories/edit/'+${cat.id}}"
+		title="Edit this category" class="fas fa-edit fa-2x icon-green"></a>
+		&nbsp; <a title="Delete this category"
+		th:href="@{'/categories/delete/'+${cat.id}}" th:catId="${cat.id}"
+		class="fa-solid fa-trash-can fa-2x icon-red link-delete"></a></div>
+
+
 
 </body>
 </html>
