@@ -53,6 +53,15 @@ public class CategoryRepositoryTest {
 		assertThat(childreCategories.size()).isGreaterThan(0);
 	}
 	
+	//Check the code in category repository
+	@Test
+	public void testListRootCategories() {
+		List<Category> rootCategories = repo.findRootCategories();
+		rootCategories.forEach(cat->{
+			System.out.println(cat.getName());
+		});
+	}
+	
 	
 	@Test
 	public void testPrintHierarchicalCategories() {
