@@ -11,7 +11,8 @@
 				th:href="@{/categories/export/csv}"
 				class="fas icon-dark fa-file-csv fa-2x mr-2"></a>
 		</div>
-
+		<div th:if="${message!=null}" class="alert alert-success text-center">
+			[[${message}]]</div>
 
 		<div>
 			<form th:action="@{/categories/page/1}" class="form-inline m-3">
@@ -48,10 +49,10 @@
 						<td>[[${cat.name}]]</td>
 						<td>[[${cat.alias}]]</td>
 						<td>
-							<div th:replace="fragments::category_status"/>
+							<div th:replace="fragments::category_status" />
 						</td>
 						<td>
-							<div th:replace="fragments::category_actions"/>
+							<div th:replace="fragments::category_actions" />
 						</td>
 					</tr>
 
