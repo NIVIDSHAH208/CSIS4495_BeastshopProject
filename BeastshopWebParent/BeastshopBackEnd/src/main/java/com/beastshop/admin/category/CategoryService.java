@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.beastshop.common.entity.Category;
 
 @Service
+@Transactional
 public class CategoryService {
 	@Autowired
 	private CategoryRepository repo;
@@ -157,6 +160,20 @@ public class CategoryService {
 		});
 		sortedChildren.addAll(children);
 		return sortedChildren;
+	}
+	
+	//Method to update the enable status
+	public void updateCategoryEnabledStatus(Integer id, boolean enabled) {
+		repo.updateEnabledStatus(id, enabled);
+	}
+	
+	//method to delete the category
+	public void delete(Integer id) throws CategoryNotFoundException {
+		Long countById = repo.countById(id);
+		if(countById==null||countById==0) {
+			throw new CategoryNotFoundException("Could not find any category with ID "+id);
+		}
+		repo.deleteById(id);
 	}
 
 }
