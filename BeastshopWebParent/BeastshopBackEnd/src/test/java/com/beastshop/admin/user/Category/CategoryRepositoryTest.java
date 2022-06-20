@@ -90,4 +90,20 @@ public class CategoryRepositoryTest {
 		}
 	}
 	
+	@Test
+	public void testFindByName() {
+		String name="Computers";
+		Category category = repo.findByName(name);
+		assertThat(category).isNotNull();
+		assertThat(category.getName()).isEqualTo(name);
+	}
+	
+	@Test
+	public void testFindByAlias() {
+		String aliasName="Electronics";
+		Category category = repo.findByAlias(aliasName);
+		assertThat(category).isNotNull();
+		assertThat(category.getAlias()).isEqualTo(aliasName);
+	}
+	
 }

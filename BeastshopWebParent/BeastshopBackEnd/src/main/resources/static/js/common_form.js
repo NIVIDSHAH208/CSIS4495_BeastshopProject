@@ -22,6 +22,20 @@ $(document)
 								})
 
 			});
+			
+function showModalDialog(title, message) {
+	$("#modalTitle").text(title);
+	$("#modalBody").text(message);
+	$("#modalDialog").modal();
+}
+
+function showErrorModal(message){
+	showModalDialog("Error", message)
+}
+
+function showWarningModal(message){
+	showModalDialog("Warning", message)
+}
 
 function showImageThumnail(fileInput) {
 	var file = fileInput.files[0];

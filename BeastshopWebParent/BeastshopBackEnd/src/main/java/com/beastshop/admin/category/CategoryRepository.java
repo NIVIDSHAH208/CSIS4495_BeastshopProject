@@ -11,4 +11,10 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 
 	@Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
 	public List<Category> findRootCategories();
+	
+	
+	//method by spring data jpa
+	public Category findByName(String name);
+	
+	public Category findByAlias(String alias);
 }
