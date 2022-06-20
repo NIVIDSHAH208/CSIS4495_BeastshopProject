@@ -35,7 +35,11 @@
 					<tr>
 						<th>ID</th>
 						<th>Category Image</th>
-						<th>Category Name</th>
+						<th><a class="text-dark"
+							th:href="@{'/categories?sortDir='+${reverseSortDir}}">Category
+								Name</a> <span
+							th:class="${reverseSortDir=='desc'?'fas fa-sort-up':'fas fa-sort-down'}"></span></th>
+
 						<th>Alias</th>
 						<th>Enabled</th>
 						<th></th>
@@ -45,9 +49,8 @@
 					<!-- Using thymeleaf to iterate through all users -->
 					<tr th:each="cat:${listCategories}">
 						<td>[[${cat.id}]]</td>
-						<td>
-							<img th:src="@{${cat.imagePath}}" style="width:100px;" class="img-fluid"/>
-						</td>
+						<td><img th:src="@{${cat.imagePath}}" style="width: 100px;"
+							class="img-fluid" /></td>
 						<td>[[${cat.name}]]</td>
 						<td>[[${cat.alias}]]</td>
 						<td>

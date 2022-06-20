@@ -119,7 +119,7 @@
 			params={id:catId, name:catName, alias:catAlias, _csrf:csrfValue};
 			
 			$.post(url, params, function(response){
-				if(response=="Ok"){
+				if(response=="OK"){
 					form.submit();
 				}else if(response=="DuplicateName"){
 					showWarningModal("There is another category having same name: "+catName);
