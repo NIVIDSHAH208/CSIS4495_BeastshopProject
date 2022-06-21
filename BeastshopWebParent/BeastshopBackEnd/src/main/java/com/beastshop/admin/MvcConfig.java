@@ -27,6 +27,15 @@ public class MvcConfig implements WebMvcConfigurer {
 		//method below expose the absolute path of user photos directory to the end user
 		registry.addResourceHandler("/category-images/**")
 			.addResourceLocations("file:/"+categoryImagesPath+"/");
+		
+		
+		String brandLogosDirName= "../brand-logos";
+		Path brandLogosDir = Paths.get(brandLogosDirName);
+		String brandLogosPath=brandLogosDir.toFile().getAbsolutePath();
+		
+		//method below expose the absolute path of user photos directory to the end user
+		registry.addResourceHandler("/brand-logos/**")
+			.addResourceLocations("file:/"+brandLogosPath+"/");
 	}
 	
 }
