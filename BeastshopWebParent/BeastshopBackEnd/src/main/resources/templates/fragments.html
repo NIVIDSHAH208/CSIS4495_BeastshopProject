@@ -102,8 +102,10 @@
 
 	<div th:fragment="search_form_message(moduleURL)">
 		<form th:action="@{${moduleURL}}" class="form-inline m-3">
-			Filter:&nbsp; <input type="search" th:value="${keyword}"
-				name="keyword" class="form-control" required /> &nbsp;&nbsp;
+			<input type="hidden" name="sortField" th:value="${sortField}" /> <input
+				type="hidden" name="sortDir" th:value="${sortDir}" /> Filter:&nbsp;
+			<input type="search" th:value="${keyword}" name="keyword"
+				class="form-control" required /> &nbsp;&nbsp;
 			<button type="submit" class="btn btn-primary mr-2">
 				<i class="fas fa-search"></i>
 			</button>
