@@ -1,4 +1,4 @@
-package com.beastshop.admin.user.export;
+package com.beastshop.admin.category;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,21 +10,23 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import com.beastshop.admin.AbstractExporter;
+import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.User;
 
-public class UserCsvExporter extends AbstractExporter {
-	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
+public class CategoryCsvExporter extends AbstractExporter {
+	public void export(List<Category> listCategories, HttpServletResponse response) throws IOException {
 		super.setResponseHeader(response, "text/csv", ".csv","beastUsers_");
 
 		// Importing csv bean writer from the super csv library
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 		// Writing header to the file
-		String[] csvHeader = { "UserId", "E-mail", "FirstName", "LastName", "Roles", "Enabled" };
+		String[] csvHeader = { "Category ID", "Category name" };
 		// Mapping the field to the array
-		String[] userFieldMapping = { "id", "email", "firstname", "lastname", "roles", "enabled" };
+		String[] categoryFieldMapping = { "id", "name" };
 		csvWriter.writeHeader(csvHeader);
-		for (User user : listUsers) {
-			csvWriter.write(user, userFieldMapping);
+		for (Category category : listCategories) {
+			category.setName(category.getName().replace("--"," "));
+			csvWriter.write(category, categoryFieldMapping);
 		}
 		csvWriter.close();
 	}

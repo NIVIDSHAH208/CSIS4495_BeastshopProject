@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.beastshop.admin.AbstractExporter;
 import com.beastshop.common.entity.User;
 
 public class UserExcelExporter extends AbstractExporter {
@@ -58,7 +59,7 @@ public class UserExcelExporter extends AbstractExporter {
 	}
 
 	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
-		super.setResponseHeader(response, "application/octet-stream", ".xlsx");
+		super.setResponseHeader(response, "application/octet-stream", ".xlsx","beastUsers_");
 
 		writeHeaderLine();
 		writeDataLines(listUsers);

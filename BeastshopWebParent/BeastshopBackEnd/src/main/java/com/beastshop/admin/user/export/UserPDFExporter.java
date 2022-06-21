@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.beastshop.admin.AbstractExporter;
 import com.beastshop.common.entity.User;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
@@ -20,7 +21,7 @@ import com.lowagie.text.pdf.PdfWriter;
 public class UserPDFExporter extends AbstractExporter{
 
 	public void export(List<User> listAllUsers, HttpServletResponse response) throws IOException {
-		super.setResponseHeader(response, "application/pdf", ".pdf");
+		super.setResponseHeader(response, "application/pdf", ".pdf","beastUsers_");
 		
 		Document document = new Document(PageSize.A4);
 		PdfWriter.getInstance(	document, response.getOutputStream());

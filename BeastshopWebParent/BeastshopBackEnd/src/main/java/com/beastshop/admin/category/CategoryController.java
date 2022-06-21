@@ -3,6 +3,8 @@ package com.beastshop.admin.category;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.beastshop.admin.FileUploadUtil;
 import com.beastshop.admin.user.UserNotFoundException;
 import com.beastshop.admin.user.UserService;
+import com.beastshop.admin.user.export.UserCsvExporter;
 import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.Role;
 import com.beastshop.common.entity.User;
@@ -39,9 +42,9 @@ public class CategoryController {
 			sortDir = "asc";
 		}
 		CategoryPageInfo pageInfo = new CategoryPageInfo();
-		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir,keyword);
+		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-		
+
 		long startCount = (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
 		long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
 
@@ -132,6 +135,14 @@ public class CategoryController {
 		String message = "The category Id " + id + " has been " + status;
 		redirectAttributes.addFlashAttribute("message", message);
 		return "redirect:/categories";
+	}
+
+	// New method to handle the export to CSV
+	@GetMapping("/categories/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<Category> listAllCategories = service.listCategoriesUsedInForm();
+		CategoryCsvExporter exporter = new CategoryCsvExporter();
+		exporter.export(listAllCategories, response);
 	}
 
 }
