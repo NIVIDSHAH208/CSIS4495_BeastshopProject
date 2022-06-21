@@ -16,9 +16,11 @@
 	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<th th:fragment="column_link(fieldName, columnLabel, removeTag)"
+
+	<th
+		th:fragment="column_link(moduleURL, fieldName, columnLabel, removeTag)"
 		th:remove="${removeTag}"><a class="text-dark"
-		th:href="@{'/users/page/'+${currentPage}+'?sortField='+${fieldName}+'&sortDir='+${sortField!=fieldName?sortDir:reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">
+		th:href="@{${moduleURL}+'/page/'+${currentPage}+'?sortField='+${fieldName}+'&sortDir='+${sortField!=fieldName?sortDir:reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">
 			[[${columnLabel}]]</a> <span th:if="${sortField==fieldName}"
 		th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}"></span>
 	</th>
@@ -32,25 +34,32 @@
 	</div>
 
 
-	<div th:fragment="category_status" th:remove="tag">
-		<a th:if="${cat.enabled == false}"
-			th:href="@{'/categories/'+${cat.id}+'/enabled/true'}"
-			class="fas fa-circle fa-2x icon-dark" title="Click to Enable"></a> <a
-			th:if="${cat.enabled == true}"
-			th:href="@{'/categories/'+${cat.id}+'/enabled/false'}"
-			class="fas fa-check-circle fa-2x icon-green" title="Click to Disable"></a>
+	<div th:fragment="status(enabled, entityName, entityURL)"
+		th:remove="tag">
+		<a th:if="${enabled == false}"
+			th:href="@{${entityURL}+'/enabled/true'}"
+			class="fas fa-circle fa-2x icon-dark"
+			th:title="'Disable this '+${entityName}"></a> <a
+			th:if="${enabled == true}" th:href="@{${entityURL}+'/enabled/false'}"
+			class="fas fa-check-circle fa-2x icon-green"
+			th:title="'Enable this '+${entityName}"></a>
 	</div>
 
-	<div th:fragment="category_actions" th:remove="tag">
-		<a th:href="@{'/categories/edit/'+${cat.id}}"
-			title="Edit this category" class="fas fa-edit fa-2x icon-green"></a>
-		&nbsp;
-		<th:block th:if="${cat.hasChildren==false}">
-			<a title="Delete this category"
-				th:href="@{'/categories/delete/'+${cat.id}}" th:entityId="${cat.id}"
+	<div th:fragment="edit(entityName, editURL)" th:remove="tag">
+		<a class="fas fa-edit fa-2x icon-green"
+			th:title="'Edit this '+${entityName}" th:href="@{${editURL}}"></a>
+	</div>
+
+
+	<div th:fragment="delete(entityName, entityId, deleteURL, visible)"
+		th:remove="tag">
+		<th:block th:if="${visible}">
+			<a title="'Delete this '+${entityName}" th:href="@{${deleteURL}}"
+				th:entityId="${entityId}"
 				class="fa-solid fa-trash-can fa-2x icon-red link-delete"></a>
 		</th:block>
 	</div>
+
 
 
 	<div th:fragment="pagination(moduleURL, entityName)" th:remove="tag">
@@ -91,7 +100,7 @@
 
 
 
-	<div th:fragment="search_form(moduleURL)">
+	<div th:fragment="search_form_message(moduleURL)">
 		<form th:action="@{${moduleURL}}" class="form-inline m-3">
 			Filter:&nbsp; <input type="search" th:value="${keyword}"
 				name="keyword" class="form-control" required /> &nbsp;&nbsp;
@@ -103,6 +112,8 @@
 				<i class="fas fa-eraser"></i>
 			</button>
 		</form>
+		<div th:if="${message!=null}" class="alert alert-success text-center">
+			[[${message}]]</div>
 	</div>
 
 </body>
