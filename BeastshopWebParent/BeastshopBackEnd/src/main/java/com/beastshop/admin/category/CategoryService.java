@@ -24,9 +24,9 @@ import com.beastshop.common.entity.Category;
 public class CategoryService {
 	@Autowired
 	private CategoryRepository repo;
-	private static final int ROOT_CATEGORIES_PER_PAGE=4;
+	public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 
-	public List<Category> listByPage(CategoryPageInfo pageInfo,int pageNum, String sortDir) {
+	public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir, String keyword) {
 		Sort sort = Sort.by("name");
 
 		if (sortDir.equals("asc")) {
@@ -34,15 +34,30 @@ public class CategoryService {
 		} else if (sortDir.equals("desc")) {
 			sort = sort.descending();
 		}
-		Pageable pageable =PageRequest.of(pageNum-1, ROOT_CATEGORIES_PER_PAGE, sort);
+		Pageable pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
+		Page<Category> pageCategories = null;
 		
-		Page<Category> pageCategories = repo.findRootCategories(pageable);
-		List<Category> rootCategories=pageCategories.getContent();
-		
+		if (keyword != null && !keyword.isEmpty()) {
+			pageCategories = repo.search(keyword, pageable);
+		} else {
+			pageCategories = repo.findRootCategories(pageable);
+		}
+		List<Category> rootCategories = pageCategories.getContent();
+
 		pageInfo.setTotalElements(pageCategories.getTotalElements());
 		pageInfo.setTotalPages(pageCategories.getTotalPages());
+
+		if (keyword != null && !keyword.isEmpty()) {
+			List<Category> searchResults = pageCategories.getContent();
+			for(Category category: searchResults) {
+				category.setHasChildren(category.getChildren().size()>0);
+			}
+			return searchResults;
+
+		}else {			
+			return listHierarchicalCategories(rootCategories, sortDir);
+		}
 		
-		return listHierarchicalCategories(rootCategories, sortDir);
 	}
 
 	private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
@@ -62,8 +77,9 @@ public class CategoryService {
 		return hierarchicalCategories;
 	}
 
-	private void listSubHierarchicalCategories(List<Category> hierarchicalCategories, Category parent, int subLevel, String sortDir) {
-		Set<Category> children = sortSubCategories(parent.getChildren(),sortDir);
+	private void listSubHierarchicalCategories(List<Category> hierarchicalCategories, Category parent, int subLevel,
+			String sortDir) {
+		Set<Category> children = sortSubCategories(parent.getChildren(), sortDir);
 		int newSubLevel = subLevel + 1;
 		for (Category subCategory : children) {
 			String name = "";
@@ -150,7 +166,7 @@ public class CategoryService {
 
 		return "OK";
 	}
-	
+
 	private SortedSet<Category> sortSubCategories(Set<Category> children) {
 		return sortSubCategories(children, "asc");
 	}
@@ -161,9 +177,9 @@ public class CategoryService {
 			@Override
 			public int compare(Category cat1, Category cat2) {
 				// TODO Auto-generated method stub
-				if(sortDir.equals("asc")) {
-					return cat1.getName().compareTo(cat2.getName());					
-				}else {
+				if (sortDir.equals("asc")) {
+					return cat1.getName().compareTo(cat2.getName());
+				} else {
 					return cat2.getName().compareTo(cat1.getName());
 				}
 			}
@@ -172,17 +188,17 @@ public class CategoryService {
 		sortedChildren.addAll(children);
 		return sortedChildren;
 	}
-	
-	//Method to update the enable status
+
+	// Method to update the enable status
 	public void updateCategoryEnabledStatus(Integer id, boolean enabled) {
 		repo.updateEnabledStatus(id, enabled);
 	}
-	
-	//method to delete the category
+
+	// method to delete the category
 	public void delete(Integer id) throws CategoryNotFoundException {
 		Long countById = repo.countById(id);
-		if(countById==null||countById==0) {
-			throw new CategoryNotFoundException("Could not find any category with ID "+id);
+		if (countById == null || countById == 0) {
+			throw new CategoryNotFoundException("Could not find any category with ID " + id);
 		}
 		repo.deleteById(id);
 	}
