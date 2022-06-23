@@ -209,5 +209,18 @@ public class Product {
 	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
+	
+	
+	//Generating the to string method here
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + "]";
+	}
+	
+	
+	
+	
+	
+	
 
 }
