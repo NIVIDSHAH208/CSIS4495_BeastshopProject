@@ -28,7 +28,7 @@ public class Brand {
 	private String logo;
 
 	@ManyToMany
-	@JoinTable(name = "brands_category", 
+	@JoinTable(name = "brands_categories", 
 	joinColumns = @JoinColumn(name = "brand_id"), 
 	inverseJoinColumns = @JoinColumn(name="category_id"))
 	private Set<Category> categories = new HashSet<>();
