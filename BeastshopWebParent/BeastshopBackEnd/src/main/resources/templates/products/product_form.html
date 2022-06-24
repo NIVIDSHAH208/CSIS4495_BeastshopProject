@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments::page_head(${pageTitle})"></head>
+<head>
+<head th:replace="fragments::page_head(${pageTitle},'tag')"></head>
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+</head>
 
 <body>
 	<div class="container-fluid">
@@ -23,6 +27,8 @@
 						href="#images" role="tab">Images</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
 						href="#details" role="tab">Details</a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						href="#shipping" role="tab">Shipping</a></li>
 				</ul>
 
 				<!-- Tab panes -->
@@ -30,9 +36,15 @@
 					<div class="tab-pane active p-3" id="overview" role="tabpanel">
 						<div th:replace="products/product_overview :: content"></div>
 					</div>
-					<div class="tab-pane" id="description" role="tabpanel">Description</div>
+					<div class="tab-pane" id="description" role="tabpanel">
+						<div th:replace="products/product_description :: content"></div>
+					</div>
 					<div class="tab-pane" id="images" role="tabpanel">Images</div>
 					<div class="tab-pane" id="details" role="tabpanel">Details</div>
+
+					<div class="tab-pane p-3" id="shipping" role="tabpanel">
+						<div th:replace="products/product_shipping :: content"></div>
+					</div>
 				</div>
 			</div>
 			<div>
@@ -55,31 +67,35 @@
 	<!-- spring security requires special tags to pass with in AJAX call-->
 		moduleURL = "[[@{/products}]]";
 		brandModuleURL = "[[@{/brands}]]";
-		
-		dropdownBrands=$("#brand");
+
+		dropdownBrands = $("#brand");
 		dropdownCategories = $("#category");
-		
-		$(document).ready(function(){
-			dropdownBrands.change(function(){
+
+		$(document).ready(function() {
+			//This is the new library that I have imported to get the text area
+			$("#shortDescription").richText();
+			$("#fullDescription").richText();
+
+			dropdownBrands.change(function() {
 				dropdownCategories.empty();
 				getCategories();
 			});
 			getCategories();
 		});
-		
-		function getCategories(){
+
+		function getCategories() {
 			brandId = dropdownBrands.val()
-			url = brandModuleURL+"/"+brandId+"/categories";
-			
+			url = brandModuleURL + "/" + brandId + "/categories";
+
 			//Get the response categories list from the server, using each method get details of each object
-			$.get(url, function(responseJson){
-				$.each(responseJson, function(index, category){
+			$.get(url, function(responseJson) {
+				$.each(responseJson, function(index, category) {
 					//alert(category.name)
-					$("<option>").val(category.id).text(category.name).appendTo(dropdownCategories);
+					$("<option>").val(category.id).text(category.name)
+							.appendTo(dropdownCategories);
 				});
 			});
 		}
-		
 	</script>
 	<script th:src="@{/js/common_form.js}"></script>
 
