@@ -97,7 +97,6 @@ public class ProductRepositoryTests {
 	public void testSaveProductWithImages() {
 		Integer productId=1;
 		Product product = repo.findById(productId).get();
-		
 		product.setMainImage("main image.jpg");
 		product.addExtraImage("extra image1.png");
 		product.addExtraImage("extra_image2.png");

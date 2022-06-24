@@ -1,5 +1,6 @@
 package com.beastshop.common.entity;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -248,6 +249,13 @@ public class Product {
 		this.images.add(new ProductImage(imageName, this));
 	}
 	
+	@Transient
+	public String getMainImagePath() {
+		if(id==null||mainImage==null) {
+			return "/images/image-thumbnail.png";
+		}
+		return "/product-images/"+this.id+"/"+this.mainImage;
+	}
 	
 	
 

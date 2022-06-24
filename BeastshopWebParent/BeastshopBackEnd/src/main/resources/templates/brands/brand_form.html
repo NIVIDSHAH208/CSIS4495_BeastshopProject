@@ -10,13 +10,14 @@
 		<div>
 			<h2>Manage Brands | [[${pageTitle}]]</h2>
 		</div>
-		
-		
 
-		<form th:action="@{/brands/save}" method="post" onsubmit="return checkUnique(this)"
-			th:object="${brand}" style="max-width: 600px; margin: 0 auto"
+
+
+		<form th:action="@{/brands/save}" method="post"
+			onsubmit="return checkUnique(this)" th:object="${brand}"
+			style="max-width: 600px; margin: 0 auto"
 			enctype="multipart/form-data">
-	
+
 			<input type="hidden" th:field="*{id}" />
 
 			<div class="border border-secondary rounded p-3">
@@ -31,11 +32,11 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Brand Logo:</label>
 					<div class="col-sm-8">
-						<input type="hidden" th:field="*{logo}" /> <input name="fileImage"
-							type="file" id="fileImage" accept="image/png, image/jpeg"
-							th:required="${brand.id==null}"
-							class="mb-2"  />
-							
+						<input type="hidden" th:field="*{logo}" /> <input
+							name="fileImage" type="file" id="fileImage"
+							accept="image/png, image/jpeg" th:required="${brand.id==null}"
+							class="mb-2" />
+
 						<div class="mt-2">
 							<img id="thumbnail" alt="Image Preview"
 								th:src="@{${brand.logoPath}}" class="img-fluid"
@@ -45,22 +46,22 @@
 				</div>
 
 				<div class="form-group row">
-					<label class="col-sm-4 col-form-label">Select one or more categories:</label>
+					<label class="col-sm-4 col-form-label">Select one or more
+						categories:</label>
 					<div class="col-sm-8">
-						<select class="form-control" th:field="*{categories}" multiple required
-							style= "resize:verticle; height:200px">
+						<select class="form-control" th:field="*{categories}" multiple
+							required style="resize: verticle; height: 200px">
 							<th:block th:each="cat:${listCategories}">
-							<option th:value="${cat.id}">[[${cat.name}]]</option>
+								<option th:value="${cat.id}">[[${cat.name}]]</option>
 							</th:block>
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Chosen categories: </label>
 					<div class="col-sm-8">
-						<div id="chosenCategories">
-						</div>
+						<div id="chosenCategories"></div>
 					</div>
 				</div>
 
@@ -72,58 +73,74 @@
 			</div>
 		</form>
 
-		
+
 		<div th:replace="modal_fragments::modal_dialog"></div>
-		
+
 
 		<div th:replace="fragments::footer"></div>
 
 	</div>
 	<script type="text/javascript">
 	<!-- spring security requires special tags to pass with in AJAX call-->
+		MAX_FILE_SIZE = 102400;
 		moduleURL = "[[@{/brands}]]";
-		$(document).ready(function(){
+		$(document).ready(function() {
 			dropdownCategories = $("#categories");
-			divChosenCategory =$("#chosenCategories")
-			
-			dropdownCategories.change(function(){
+			divChosenCategory = $("#chosenCategories")
+
+			dropdownCategories.change(function() {
 				divChosenCategory.empty();
 				showChosenCategories();
 			});
-			
+
 			showChosenCategories();
 		});
-		
-		function showChosenCategories(){
-			dropdownCategories.children("option:selected").each(function() {
-				selectedCategory =$(this);
-				catId = selectedCategory.val();
-				catName = selectedCategory.text().replace(/-/g,"");
-				divChosenCategory.append("<span class='badge badge-secondary m-1'>"+catName+"</span>")
-			})
+
+		function showChosenCategories() {
+			dropdownCategories
+					.children("option:selected")
+					.each(
+							function() {
+								selectedCategory = $(this);
+								catId = selectedCategory.val();
+								catName = selectedCategory.text().replace(/-/g,
+										"");
+								divChosenCategory
+										.append("<span class='badge badge-secondary m-1'>"
+												+ catName + "</span>")
+							})
 		}
-		
-		function checkUnique(form){
-			brandId=$("#id").val();
-			brandName=$("#name").val();
-			
-			csrfValue=$("input[name='_csrf']").val();
-			
-			url="[[@{/brands/check_unique}]]";
-			
-			params={id:brandId, name:brandName, _csrf:csrfValue};
-			
-			$.post(url, params, function(response){
-				if(response=="OK"){
-					form.submit()
-				}else if(response=="Duplicate"){
-					showWarningModal("There is another brand having same name "+brandName);
-				}else{
-					showErrorModal("Unknown response from the server");
-				}
-			}).fail(function(){
-				showErrorModal("Could not connect to the server");
-			});
+
+		function checkUnique(form) {
+			brandId = $("#id").val();
+			brandName = $("#name").val();
+
+			csrfValue = $("input[name='_csrf']").val();
+
+			url = "[[@{/brands/check_unique}]]";
+
+			params = {
+				id : brandId,
+				name : brandName,
+				_csrf : csrfValue
+			};
+
+			$
+					.post(
+							url,
+							params,
+							function(response) {
+								if (response == "OK") {
+									form.submit()
+								} else if (response == "Duplicate") {
+									showWarningModal("There is another brand having same name "
+											+ brandName);
+								} else {
+									showErrorModal("Unknown response from the server");
+								}
+							}).fail(function() {
+						showErrorModal("Could not connect to the server");
+					});
 			return false;
 		}
 	</script>
