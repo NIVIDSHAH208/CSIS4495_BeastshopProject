@@ -15,7 +15,7 @@
 			<h2>Manage Product | [[${pageTitle}]]</h2>
 		</div>
 
-		<form th:action="@{/products/save}" method="post"
+		<form th:action="@{/products/save}" method="post" onsubmit="return checkUnique(this)"
 			th:object="${product}">
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -72,7 +72,7 @@
 		dropdownCategories = $("#category");
 
 		$(document).ready(function() {
-			//This is the new library that I have imported to get the text area
+			
 			$("#shortDescription").richText();
 			$("#fullDescription").richText();
 
@@ -95,6 +95,29 @@
 							.appendTo(dropdownCategories);
 				});
 			});
+		}
+		
+		function checkUnique(form){
+			productId = $("#id").val();
+			productName = $("#name").val();
+			csrfValue = $("input[name='_csrf']").val()
+			
+			url="[[@{/products/check_unique}]]"
+			params = {id:productId, name:productName, _csrf:csrfValue}
+			
+			$.post(url, params, function(response){
+				if(response=="OK"){
+					form.submit();
+				}else if(response=="Duplicate"){
+					//alert("Test")
+					showWarningModal("There is another product having the name "+productName)
+				}else{
+					showErrorModal("Unknown response from the server")
+				}	
+			}).fail(function(){
+				showErrorModal("Could not connect to the server")
+			})
+			return false;
 		}
 	</script>
 	<script th:src="@{/js/common_form.js}"></script>
