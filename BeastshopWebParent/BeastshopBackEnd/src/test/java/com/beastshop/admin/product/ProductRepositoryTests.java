@@ -94,6 +94,20 @@ public class ProductRepositoryTests {
 	}
 	
 	@Test
+	public void testSaveProductWithDetails() {
+		Integer productId=1;
+		Product product = repo.findById(productId).get();
+		
+
+		product.addDetail("Device memory", "128 GB");
+		product.addDetail("OS", "Windows");
+		product.addDetail("Processor", "Intel i7");
+		
+		Product savedProduct = repo.save(product);
+		assertThat(savedProduct.getDetails()).isNotEmpty();
+	}
+	
+	@Test
 	public void testSaveProductWithImages() {
 		Integer productId=1;
 		Product product = repo.findById(productId).get();
