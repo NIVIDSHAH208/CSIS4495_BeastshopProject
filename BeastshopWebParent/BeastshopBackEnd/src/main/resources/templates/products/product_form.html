@@ -16,8 +16,8 @@
 		</div>
 
 		<form th:action="@{/products/save}" method="post"
-			enctype="multipart/form-data"
-			onsubmit="return checkUnique(this)" th:object="${product}">
+			enctype="multipart/form-data" onsubmit="return checkUnique(this)"
+			th:object="${product}">
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item"><a class="nav-link active"
@@ -61,79 +61,17 @@
 
 
 		<div th:replace="modal_fragments::modal_dialog"></div>
-
-
 		<div th:replace="fragments::footer"></div>
 
 	</div>
 	<script type="text/javascript">
-	<!-- spring security requires special tags to pass with in AJAX call-->
 		MAX_FILE_SIZE = 502400;
 		moduleURL = "[[@{/products}]]";
 		brandModuleURL = "[[@{/brands}]]";
-
-		dropdownBrands = $("#brand");
-		dropdownCategories = $("#category");
-
-		$(document).ready(function() {
-
-			$("#shortDescription").richText();
-			$("#fullDescription").richText();
-
-			dropdownBrands.change(function() {
-				dropdownCategories.empty();
-				getCategories();
-			});
-			getCategories();
-		});
-
-		function getCategories() {
-			brandId = dropdownBrands.val()
-			url = brandModuleURL + "/" + brandId + "/categories";
-
-			//Get the response categories list from the server, using each method get details of each object
-			$.get(url, function(responseJson) {
-				$.each(responseJson, function(index, category) {
-					//alert(category.name)
-					$("<option>").val(category.id).text(category.name)
-							.appendTo(dropdownCategories);
-				});
-			});
-		}
-
-		function checkUnique(form) {
-			productId = $("#id").val();
-			productName = $("#name").val();
-			csrfValue = $("input[name='_csrf']").val()
-
-			url = "[[@{/products/check_unique}]]"
-			params = {
-				id : productId,
-				name : productName,
-				_csrf : csrfValue
-			}
-
-			$
-					.post(
-							url,
-							params,
-							function(response) {
-								if (response == "OK") {
-									form.submit();
-								} else if (response == "Duplicate") {
-									//alert("Test")
-									showWarningModal("There is another product having the name "
-											+ productName)
-								} else {
-									showErrorModal("Unknown response from the server")
-								}
-							}).fail(function() {
-						showErrorModal("Could not connect to the server")
-					})
-			return false;
-		}
+		defaultImageThumbnailSrc="[[@{/images/image-thumbnail.png}]]";
 	</script>
 	<script th:src="@{/js/common_form.js}"></script>
+	<script th:src="@{/js/product_form.js}"></script>
 
 </body>
 
