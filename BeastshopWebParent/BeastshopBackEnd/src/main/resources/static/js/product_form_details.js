@@ -18,7 +18,7 @@ function addNextDetailSection(){
 	previousDivDetailId = previousDivDetailSection.attr("id");
 	htmlLinkRemove=`<a href="javascript:removeDetailSectionById('${previousDivDetailId}')" class="btn fas fa-times-circle fa-2x icon-dark" title="Remove this detail"></a>`;
 	previousDivDetailSection.append(htmlLinkRemove);
-	$("input[name='detailNames']").last().focus();
+	$("input[name='detailNames']").last().focus();	
 }
 
 function removeDetailSectionById(id){
