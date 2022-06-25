@@ -52,8 +52,8 @@ public class ProductController {
 	public String saveProduct(Product product, RedirectAttributes redirectAttributes,
 			@RequestParam("fileImage") MultipartFile mainImageMultipartFile,
 			@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
-			@RequestParam(name="detailNames", required = false) String[] detailNames,
-			@RequestParam(name="detailValues", required = false) String[] detailValues) throws IOException {
+			@RequestParam(name = "detailNames", required = false) String[] detailNames,
+			@RequestParam(name = "detailValues", required = false) String[] detailValues) throws IOException {
 
 		setMainImageName(mainImageMultipartFile, product);
 		setExtraImageNames(extraImageMultiparts, product);
@@ -67,14 +67,14 @@ public class ProductController {
 	}
 
 	private void setProductDetails(String[] detailNames, String[] detailValues, Product product) {
-		if(detailNames==null||detailNames.length==0) {
+		if (detailNames == null || detailNames.length == 0) {
 			return;
 		}
-		for(int count =0; count<detailNames.length; count++) {
+		for (int count = 0; count < detailNames.length; count++) {
 			String name = detailNames[count];
 			String value = detailValues[count];
-			
-			if(!name.isEmpty()&&!value.isEmpty()) {
+
+			if (!name.isEmpty() && !value.isEmpty()) {
 				product.addDetail(name, value);
 			}
 		}
@@ -137,10 +137,10 @@ public class ProductController {
 			productService.delete(id);
 			String productExtraImagesDir = "../product-images/" + id + "/extras";
 			String productImagesDir = "../product-images/" + id;
-			
+
 			FileUploadUtil.removeDir(productExtraImagesDir);
 			FileUploadUtil.removeDir(productImagesDir);
-			
+
 			redirectAttributes.addFlashAttribute("message", "The product ID " + id + " has been deleted successfully.");
 		} catch (ProductNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message", ex.getMessage());
@@ -148,5 +148,23 @@ public class ProductController {
 		}
 		return "redirect:/products";
 
+	}
+
+	@GetMapping("/products/edit/{id}")
+	public String editProduct(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+		try {
+			Product product = productService.get(id);
+			List<Brand> listBrands = brandService.listAll();
+			model.addAttribute("product", product);
+			model.addAttribute("listBrands", listBrands);
+			model.addAttribute("pageTitle", "Edit product (ID: " + id + ")");
+			Integer numOfExtraImages = product.getImages().size();
+			model.addAttribute("numOfExtraImages",numOfExtraImages);
+			
+			return "products/product_form";
+		} catch (ProductNotFoundException e) {
+			ra.addFlashAttribute("message", e.getMessage());
+			return "redirect:/products";
+		}
 	}
 }

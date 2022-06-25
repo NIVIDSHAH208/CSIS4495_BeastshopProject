@@ -17,7 +17,7 @@
 		<div class="form-group row">
 			<label class="col-sm-2 col-form-label">Alias:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" th:field="*{alias}" 
+				<input type="text" class="form-control" th:field="*{alias}"
 					minlength="3" maxlength="256"
 					placeholder="Default is product name (Spaces are replaced by dashes)" />
 			</div>
@@ -37,9 +37,18 @@
 		<div class="form-group row">
 			<label class="col-sm-2 col-form-label">Category:</label>
 			<div class="col-sm-10">
-				<select th:field="*{category}" class="form-control" required>
+				<th:block th:if="${product.category!=null}">
+					<select th:field="*{category}" class="form-control" required>
+						<th:block th:each="cat:${product.brand.categories}">
+							<option th:value="${cat.id}">[[${cat.name}]]</option>
+						</th:block>
+					</select>
+				</th:block>
 
-				</select>
+				<th:block th:if="${product.category==null}">
+					<select th:field="*{category}" class="form-control" required>
+					</select>
+				</th:block>
 			</div>
 		</div>
 
