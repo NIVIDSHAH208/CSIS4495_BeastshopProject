@@ -38,8 +38,8 @@
 						<input type="file" name="extraImage"
 							accept="image/png, image/jpeg" />
 					</div>
-					<input type="hidden" name="imageIDs" th:id="'imageId'+${status.index}" />
-					<input type="hidden" name="imageNames" th:id="'imageName'+${status.index}" />
+					<input type="hidden" name="imageIDs" th:value="${productImage.id}" th:id="'imageId'+${status.index}" />
+					<input type="hidden" name="imageNames" th:value="${productImage.name}" th:id="'imageName'+${status.index}" />
 				</div>
 			</th:block>
 
