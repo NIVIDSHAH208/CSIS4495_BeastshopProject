@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -27,6 +28,7 @@ import com.beastshop.admin.FileUploadUtil;
 import com.beastshop.admin.brand.BrandService;
 import com.beastshop.admin.category.CategoryNotFoundException;
 import com.beastshop.admin.category.CategoryService;
+import com.beastshop.admin.security.BeastshopUserDetails;
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.Product;
@@ -95,20 +97,29 @@ public class ProductController {
 		model.addAttribute("product", product);
 		model.addAttribute("listBrands", listBrands);
 		model.addAttribute("pageTitle", "Create new product");
+		model.addAttribute("numOfExtraImages",0);
 
 		return "products/product_form";
 	}
 
 	@PostMapping("/products/save")
 	public String saveProduct(Product product, RedirectAttributes redirectAttributes,
-			@RequestParam("fileImage") MultipartFile mainImageMultipartFile,
-			@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
+			@RequestParam(value="fileImage", required = false) MultipartFile mainImageMultipartFile,
+			@RequestParam(value="extraImage", required = false) MultipartFile[] extraImageMultiparts,
 			@RequestParam(name = "detailIDs", required = false) String[] detailIDs,
 			@RequestParam(name = "detailNames", required = false) String[] detailNames,
 			@RequestParam(name = "detailValues", required = false) String[] detailValues,
 			@RequestParam(name = "imageIDs", required = false) String[] imageIDs,
-			@RequestParam(name = "imageNames", required = false) String[] imageNames) throws IOException {
+			@RequestParam(name = "imageNames", required = false) String[] imageNames,
+			@AuthenticationPrincipal BeastshopUserDetails loggedUser
+			) throws IOException {
 
+		if(loggedUser.hasRole("Salesperson")) {
+			productService.saveProductPrice(product);
+			redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
+			return "redirect:/products";
+		}
+		
 		setMainImageName(mainImageMultipartFile, product);
 		setExistingExtraImageNames(imageIDs,imageNames ,product);
 		setNewExtraImageNames(extraImageMultiparts, product);
