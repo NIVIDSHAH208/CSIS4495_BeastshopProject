@@ -1,4 +1,4 @@
-package com.beastshop.site;
+package com.beastshop;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
