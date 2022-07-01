@@ -77,6 +77,13 @@ public class Product {
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetails> details = new ArrayList<>();
+	
+	@Transient
+	public String getShortName() {
+		if(name.length()>70) {
+			return name.substring(0,70).concat("...");
+		}return name;
+	}
 
 	public List<ProductDetails> getDetails() {
 		return details;
