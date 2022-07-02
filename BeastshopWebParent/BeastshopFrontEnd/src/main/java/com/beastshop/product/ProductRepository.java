@@ -14,4 +14,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	//Spring data jpa will take care {findBy+(entity name)}
 	public Product findByAlias(String alias);
+	
+	//Method to implement fulltext search in the database
+	@Query(value="SELECT * FROM products WHERE enabled = true AND MATCH(name, short_description, full_description) against (?1)", nativeQuery = true)
+	public Page<Product> search(String keyword, Pageable pageable);
 }

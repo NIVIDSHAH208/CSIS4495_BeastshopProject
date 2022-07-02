@@ -9,7 +9,7 @@
 				th:src="@{/images/beast.jpg}" style="width: 180px; height: 50px;" /></a>
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#topNavBar">
+				data-target="#topNavBar, #searchNavBar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
@@ -29,6 +29,20 @@
 				</ul>
 			</div>
 		</nav>
+	</div>
+	
+	<div th:fragment="search_nav" class="row">
+		<div class="col-md">
+			<nav class="navbar navbar-expand-sm bg-light">
+				<div class="collapse navbar-collapse" id="searchNavBar">
+					<form class="form-inline" th:action="@{/search}" method="get">
+						<input type="search" name="keyword" class="form-control mr-sm-2"
+						th:value="${keyword}" placeholder="Keyword" required/>
+						<input type="submit" value="Search" class="btn btn-outline-success" />
+					</form>
+				</div>
+			</nav>
+		</div>
 	</div>
 
 
