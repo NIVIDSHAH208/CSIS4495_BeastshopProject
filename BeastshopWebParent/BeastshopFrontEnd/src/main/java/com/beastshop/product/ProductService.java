@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.beastshop.common.entity.Product;
+import com.beastshop.common.exception.ProductNotFoundException;
 
 @Service
 public class ProductService {
@@ -15,10 +16,23 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	
+	//Method to list all products by category
 	public Page<Product> listByCategory(int pageNum, Integer categoryId){
 		String categoryIDMatch = "-"+String.valueOf(categoryId)+"-";
 		Pageable pageable = PageRequest.of(pageNum-1, PRODUCTS_PER_PAGE);
 		
 		return productRepository.listByCategory(categoryId, categoryIDMatch, pageable);
 	}
+	
+	
+	//Method to get product by alias
+	public Product getProduct(String alias) throws ProductNotFoundException {
+		Product product = productRepository.findByAlias(alias);
+		if(product==null) {
+			throw new ProductNotFoundException("Could not find any product with alias "+alias);
+		}
+		return product;
+	}
+	
 }

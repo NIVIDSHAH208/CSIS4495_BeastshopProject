@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Product;
+import com.beastshop.common.exception.ProductNotFoundException;
 
 @Service
 @Transactional

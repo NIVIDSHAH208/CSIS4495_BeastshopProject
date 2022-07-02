@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.beastshop.common.entity.Category;
+import com.beastshop.common.exception.CategoryNotFoundException;
 
 @Service
 @Transactional

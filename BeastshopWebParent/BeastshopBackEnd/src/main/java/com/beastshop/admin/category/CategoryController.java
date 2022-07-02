@@ -24,6 +24,7 @@ import com.beastshop.admin.user.export.UserCsvExporter;
 import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.Role;
 import com.beastshop.common.entity.User;
+import com.beastshop.common.exception.CategoryNotFoundException;
 
 @Controller
 public class CategoryController {

@@ -1,4 +1,4 @@
-package com.beastshop.admin.category;
+package com.beastshop.common.exception;
 
 public class CategoryNotFoundException extends Exception {
 	public CategoryNotFoundException(String message) {

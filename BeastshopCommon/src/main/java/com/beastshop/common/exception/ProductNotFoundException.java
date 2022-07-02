@@ -1,4 +1,4 @@
-package com.beastshop.admin.product;
+package com.beastshop.common.exception;
 
 public class ProductNotFoundException extends Exception {
 

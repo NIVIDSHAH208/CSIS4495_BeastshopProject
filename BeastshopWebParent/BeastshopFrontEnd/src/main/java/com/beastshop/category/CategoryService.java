@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.beastshop.common.entity.Category;
+import com.beastshop.common.exception.CategoryNotFoundException;
 
 @Service
 public class CategoryService {
@@ -28,8 +29,12 @@ public class CategoryService {
 		return listNoChildrenCategories;
 	}
 	//Method to get the category by alias
-	public Category getCategory(String alias) {
-		return repo.findByAliasEnabled(alias);
+	public Category getCategory(String alias) throws CategoryNotFoundException {
+		 Category categoryByAlias = repo.findByAliasEnabled(alias);
+		 if(categoryByAlias==null) {
+			 throw new CategoryNotFoundException("Could not find any category with "+alias);
+		 }
+		 return categoryByAlias;
 	}
 	
 	//Method to list the parent categories

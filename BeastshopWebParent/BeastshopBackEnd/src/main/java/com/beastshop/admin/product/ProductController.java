@@ -26,13 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.FileUploadUtil;
 import com.beastshop.admin.brand.BrandService;
-import com.beastshop.admin.category.CategoryNotFoundException;
 import com.beastshop.admin.category.CategoryService;
 import com.beastshop.admin.security.BeastshopUserDetails;
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.Product;
 import com.beastshop.common.entity.ProductImage;
+import com.beastshop.common.exception.ProductNotFoundException;
 
 @Controller
 public class ProductController {
