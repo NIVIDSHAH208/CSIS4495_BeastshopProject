@@ -34,6 +34,14 @@ public class SettingRepositoryTest {
 	}
 	
 	@Test
+	public void testCreateSingleCurrencySettings() {
+		
+		Setting symbolPosition = new Setting("CURRENCY_SYMBOL_POSITION","before", SettingCategory.CURRENCY);
+		repo.save(symbolPosition);
+	}
+	
+	
+	@Test
 	public void testCreateCurrencySettings() {
 		Setting currencyId = new Setting("CURRENCY_ID","1", SettingCategory.CURRENCY);
 		Setting symbol = new Setting("CURRENCY_SYMBOL","$", SettingCategory.CURRENCY);
@@ -43,7 +51,7 @@ public class SettingRepositoryTest {
 		Setting thousandsPointType = new Setting("THOUSANDS_POINT_TYPE","COMMA", SettingCategory.CURRENCY);
 		
 		repo.saveAll(List.of(currencyId,symbol,symbolPosition,decimalPointType,decimalDigits,thousandsPointType));
-		
+			
 	}
 	
 	@Test
