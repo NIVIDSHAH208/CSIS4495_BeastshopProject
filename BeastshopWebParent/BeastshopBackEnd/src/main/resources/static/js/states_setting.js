@@ -51,10 +51,15 @@ function deleteState(){
 	stateId = dropDownStates.val();
 	url=contextPath+"states/delete/"+stateId;
 	
-	$.get(url, function(){
+	$.ajax({
+		type: "DELETE",
+		url: url,
+		beforeSend: function(xhr){
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		}
+	}).done(function(){
 		$("#dropDownStates option[value='"+stateId+"']").remove();
 		changeFormStateToNew();
-	}).done(function(){
 		showToastMessage("The state has been deleted");
 	}).fail(function(){
 		showToastmessage("Error-cound not connect to the server");

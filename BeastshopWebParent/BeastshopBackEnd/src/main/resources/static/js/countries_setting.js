@@ -34,7 +34,7 @@ $(document).ready(function(){
 		if(buttonAddCountry.val()=="Add"){
 			addCountry();
 		}else{		
-			changeFormStateToNew();
+			changeFormStateToNewCountry();
 		}
 	});
 	
@@ -52,10 +52,15 @@ function deleteCountry(){
 	countryId=dropDownCountry.val().split("-")[0];
 	url = contextPath+ "countries/delete/"+countryId;
 	
-	$.get(url, function(){
-		$("#dropdownCountries option[value='"+optionValue+"']").remove();
-		changeFormStateToNew()
+	$.ajax({
+		type: "DELETE",
+		url: url,
+		beforeSend: function(xhr){
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		}
 	}).done(function(countryId){
+		$("#dropdownCountries option[value='"+optionValue+"']").remove();
+		changeFormStateToNewCountry()
 		showToastMessage("The country has been deleted");
 	}).fail(function(){
 		showToastMessage("Error-Could not connect to the server");
@@ -83,7 +88,7 @@ function updateCountry(){
 		$("#dropdownCountries option:selected").text(countryName);
 		showToastMessage("The new country has been updated");
 		
-		changeFormStateToNew();
+		changeFormStateToNewCountry();
 	}).fail(function(){
 		showToastMessage("Error-Could not connect to the server");
 	});
@@ -123,7 +128,7 @@ function selectNewlyAddedCountry(countryId, countryCode, countryName){
 	
 }
 
-function changeFormStateToNew(){
+function changeFormStateToNewCountry(){
 	buttonAddCountry.val("Add");
 	labelCountryName.text("Country Name:");
 	buttonUpdateCountry.prop("disabled", true);
