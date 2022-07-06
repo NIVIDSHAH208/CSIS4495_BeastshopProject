@@ -2,6 +2,7 @@ package com.beastshop.common.entity;
 
 
 
+import java.beans.Transient;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -50,7 +51,7 @@ public class Customer {
 	@Column(name="postal_code",nullable = false, length = 10)
 	private String postalCode;
 	
-	@Column(name="verification_code", length = 10)
+	@Column(name="verification_code", length = 64)
 	private String verificationCode;
 	
 	private boolean enabled;
@@ -189,6 +190,11 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+	}
+	
+	
+	public String getFullname() {
+		return firstName+" "+lastName;
 	}
 	
 	
