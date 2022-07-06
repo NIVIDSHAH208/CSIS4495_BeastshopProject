@@ -67,6 +67,11 @@ function deleteState(){
 }
 
 function updateState(){
+
+	if(!validateFormState()){
+		return;
+	}
+
 	url=contextPath+"states/save";
 	stateId = dropDownStates.val();
 	stateName=fieldStateName.val();
@@ -95,6 +100,11 @@ function updateState(){
 }
 
 function addState(){
+
+	if(!validateFormState()){
+		return;
+	}
+
 	url=contextPath+"states/save";
 	stateName=fieldStateName.val();
 	selectedCountry=$("#dropDownCountriesForStates option:selected");
@@ -116,6 +126,15 @@ function addState(){
 	}).fail(function(){
 		showToastMessage("Error-Could not connect to the server");
 	});
+}
+
+function validateFormState(){
+	formState = document.getElementById("formState");
+	if(!formState.checkValidity()){
+		formState.reportValidity();
+		return false;
+	}
+	return true;
 }
 
 function selectNewlyAddedState(stateId, stateName){
