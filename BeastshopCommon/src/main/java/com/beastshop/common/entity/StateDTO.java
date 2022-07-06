@@ -1,4 +1,4 @@
-package com.beastshop.admin.setting.state;
+package com.beastshop.common.entity;
 
 public class StateDTO {
 	private Integer id;

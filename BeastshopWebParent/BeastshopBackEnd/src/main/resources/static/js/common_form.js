@@ -19,6 +19,14 @@ function showModalDialog(title, message) {
 	$("#modalDialog").modal();
 }
 
+function showErrorModal(message){
+	showModalDialog("Error", message)
+}
+
+function showWarningModal(message){
+	showModalDialog("Warning", message)
+}
+
 function checkFileSize(fileInput){
 	fileSize = fileInput.files[0].size;
 	
@@ -33,13 +41,7 @@ function checkFileSize(fileInput){
 	}
 }
 
-function showErrorModal(message){
-	showModalDialog("Error", message)
-}
 
-function showWarningModal(message){
-	showModalDialog("Warning", message)
-}
 
 function showImageThumnail(fileInput) {
 	var file = fileInput.files[0];

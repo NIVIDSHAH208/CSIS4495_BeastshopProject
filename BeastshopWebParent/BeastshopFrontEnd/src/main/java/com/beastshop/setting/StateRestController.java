@@ -1,4 +1,4 @@
-package com.beastshop.admin.setting.state;
+package com.beastshop.setting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import com.beastshop.common.entity.StateDTO;
 public class StateRestController {
 	@Autowired private StateRepository repo;
 	
-	@GetMapping("/states/list_by_country/{id}")
+	@GetMapping("/settings/list_states__by_country/{id}")
 	public List<StateDTO> listByCountry(@PathVariable("id") Integer countryId){
 		List<State> listStates = repo.findByCountryOrderByNameAsc(new Country(countryId));
 		List<StateDTO> result = new ArrayList<>();
@@ -32,14 +32,5 @@ public class StateRestController {
 	}
 	
 	
-	@PostMapping("/states/save")
-	public String save(@RequestBody State state) {
-		State savedState = repo.save(state);
-		return String.valueOf(savedState.getId());
-	}
 	
-	@DeleteMapping("/states/delete/{id}")
-	public void delete(@PathVariable("id") Integer id) {
-		repo.deleteById(id);
-	}
 }
