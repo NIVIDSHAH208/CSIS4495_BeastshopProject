@@ -1,9 +1,9 @@
 package com.beastshop.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,11 +12,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.beastshop.security.oauth.CustomerOAuth2UserService;
+
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired private CustomerOAuth2UserService oAuth2UserService;
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new CustomerUserDetailsService();
@@ -48,7 +52,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.loginPage("/login")
 					.usernameParameter("email")
 					.permitAll()
-				.and().logout().permitAll().and()
+				.and()
+				.oauth2Login()
+					.loginPage("/login")
+					.userInfoEndpoint()
+					.userService(oAuth2UserService)
+				.and()
+				.and()
+				.logout().permitAll().and()
 				.rememberMe()
 					.key("AbcdEfghIjkLmnOp-1234567890")
 					.tokenValiditySeconds(14*24*60*60);

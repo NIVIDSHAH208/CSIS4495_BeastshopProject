@@ -1,0 +1,34 @@
+server:
+  port: 80
+  servlet:
+    context-path: /beastshop
+spring:
+  datasource:
+    password: 2081999Nnsh@
+    url: jdbc:mysql://localhost:3306/beastshopdb
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+      
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 869193072481-l2c0f9flq58mhu38a0vup5kd4tu7rh7d.apps.googleusercontent.com
+            client-secret: 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
+            scope: 
+            - email
+            - profile
+            
+            
+
