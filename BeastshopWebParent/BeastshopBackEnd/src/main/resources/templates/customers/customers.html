@@ -11,7 +11,7 @@
 				class="fas icon-dark fa-file-csv fa-2x mr-2"></a>
 		</div>
 
-		<div th:replace="fragments::search_form_message('/customers/page/1')"></div>
+		<div th:replace="fragments::search_form_message"></div>
 
 		<div class="full-details">
 			<table
@@ -20,29 +20,29 @@
 					<tr>
 
 						<th
-							th:replace="fragments::column_link('/customers','id', 'Customer Id','none')" />
+							th:replace="fragments::column_link('id', 'Customer Id','none')" />
 						<th
-							th:replace="fragments::column_link('/customers','firstName', 'First Name','none')" />
+							th:replace="fragments::column_link('firstName', 'First Name','none')" />
 						<th
-							th:replace="fragments::column_link('/customers','lastName', 'Last Name','none')" />
+							th:replace="fragments::column_link('lastName', 'Last Name','none')" />
 						<th class="hideable-column">
 						<th
-							th:replace="fragments::column_link('/customers','email', 'Email','tag')" />
+							th:replace="fragments::column_link('email', 'Email','tag')" />
 						</th>
 						<th class="hideable-column">
 						<th
-							th:replace="fragments::column_link('/customers','city', 'City','tag')" />
+							th:replace="fragments::column_link('city', 'City','tag')" />
 						</th>
 						<th class="hideable-column">
 						<th
-							th:replace="fragments::column_link('/customers','state', 'State','tag')" />
+							th:replace="fragments::column_link('state', 'State','tag')" />
 						</th>
 						
 						<th
-							th:replace="fragments::column_link('/customers','country', 'Country','none')" />
+							th:replace="fragments::column_link('country', 'Country','none')" />
 
 						<th
-							th:replace="fragments::column_link('/customers','enabled', 'Enabled','none')" />
+							th:replace="fragments::column_link('enabled', 'Enabled','none')" />
 						<th></th>
 					</tr>
 				</thead>
@@ -106,7 +106,7 @@
 			</div>
 		</div>
 
-		<div th:replace="fragments::pagination('/customers','customers')"></div>
+		<div th:replace="fragments::pagination('customers')"></div>
 
 
 		<div th:replace="modal_fragments::confirm_modal"></div>

@@ -49,16 +49,16 @@
 					<tr>
 						
 						<th class="hideable-column"
-							th:replace="fragments:: column_link('/products','id','ID','none')" ></th>
+							th:replace="fragments:: column_link('id','ID','none')" ></th>
 						</th>
 						<th>Main Image</th>
 						<th
-							th:replace="fragments:: column_link('/products','name','product Name','none')"></th>
+							th:replace="fragments:: column_link('name','product Name','none')"></th>
 						
 						<th class="hideable-column"
-							th:replace="fragments:: column_link('/products','brand','Brand','none')" ></th>
+							th:replace="fragments:: column_link('brand','Brand','none')" ></th>
 						<th class="hideable-column"
-							th:replace="fragments:: column_link('/products','category','Category','none')" /><th:block
+							th:replace="fragments:: column_link('category','Category','none')" /><th:block
 								sec:authorize="hasAnyAuthority('Admin','Editor')">
 								<th>Enabled</th>
 							</th:block>
@@ -133,7 +133,7 @@
 				<div class="modal-content"></div>
 			</div>
 		</div>
-		<div th:replace="fragments::pagination('/products','products')"></div>
+		<div th:replace="fragments::pagination('products')"></div>
 
 		<div th:replace="fragments::footer"></div>
 
