@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.beastshop.common.entity.AuthenticationType;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.Customer;
 import com.beastshop.setting.CountryRepository;
@@ -67,4 +68,13 @@ public class CustomerService {
 			return true;
 		}
 	}
+	
+	
+	//Method to update the authentication type of the customer
+	public void updateAuthentication(Customer customer, AuthenticationType type) {
+		if(!customer.getAuthenticationType().equals(type)) {
+			customerRepo.updateAuthenticationType(customer.getId(), type);
+		}
+	}
+	
 }
