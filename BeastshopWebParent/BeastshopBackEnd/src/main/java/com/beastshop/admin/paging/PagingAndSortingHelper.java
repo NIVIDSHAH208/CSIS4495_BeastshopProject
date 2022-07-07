@@ -13,7 +13,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class PagingAndSortingHelper {
 	
 	private ModelAndViewContainer model;
-	private String moduleURL;
 	private String listName;
 	private String sortField;
 	private String sortDir;
@@ -21,7 +20,6 @@ public class PagingAndSortingHelper {
 	
 	public PagingAndSortingHelper(ModelAndViewContainer model, String listName,String sortField,String sortDir,String keyword) {
 		this.model=model;
-		this.moduleURL=moduleURL;
 		this.listName=listName;
 		this.sortField=sortField;
 		this.sortDir=sortDir;
