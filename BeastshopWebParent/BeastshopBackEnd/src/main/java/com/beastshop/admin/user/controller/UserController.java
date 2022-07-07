@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.FileUploadUtil;
+import com.beastshop.admin.paging.PagingAndSortingHelper;
+import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.admin.user.UserNotFoundException;
 import com.beastshop.admin.user.UserService;
 import com.beastshop.admin.user.export.UserCsvExporter;
@@ -34,8 +36,9 @@ public class UserController {
 	private UserService service;
 
 	@GetMapping("/users")
-	public String listFirstPage(Model model) {
-		return listByPage(1, model, "id", "asc",null);
+	public String listFirstPage() {
+//		return listByPage(helper, 1, model, "id", "asc",null);
+		return "redirect:/users/page/1?sortField=id&sortDir=asc";
 	}
 
 	@GetMapping("/users/new")
@@ -50,33 +53,16 @@ public class UserController {
 	}
 
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-			@Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
+	public String listByPage(
+			@PagingAndSortingParam(listName="listUsers", moduleURL="/users") PagingAndSortingHelper helper,
+			@PathVariable(name = "pageNum") int pageNum) {
 //		System.out.println("Sort field: "+sortField+" Sort Dir: "+sortDir);
-		Page<User> pageUser = service.listByPage(pageNum, sortField, sortDir,keyword);
-		List<User> listUsers = pageUser.getContent();
 		// Printing to check the page and user sizes
 //		System.out.println("Page number is: "+pageNum);
 //		System.out.println("Total element are: "+pageUser.getTotalElements());
 //		System.out.println("Total Pages are: "+pageUser.getTotalPages());
-		long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
-		long endCount = startCount + UserService.USERS_PER_PAGE - 1;
-
-		if (endCount > pageUser.getTotalElements()) {
-			endCount = pageUser.getTotalElements();
-		}
-		String reverseSortDir= sortDir.equals("asc")?"desc":"asc";
-		model.addAttribute("totalPages", pageUser.getTotalPages());
-		model.addAttribute("currentPage", pageNum);
-		model.addAttribute("startCount", startCount);
-		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalItems", pageUser.getTotalElements());
-		model.addAttribute("listUsers", listUsers);
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("reverseSortDir", reverseSortDir);
-		model.addAttribute("keyword", keyword);
-		model.addAttribute("moduleURL","/users");
+		
+		service.listByPage(pageNum, helper);
 
 
 		return "users/users";
