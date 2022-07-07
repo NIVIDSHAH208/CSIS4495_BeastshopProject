@@ -20,9 +20,9 @@ import com.beastshop.common.exception.ProductNotFoundException;
 @Service
 @Transactional
 public class ProductService {
+	public static final int PRODUCTS_PER_PAGE=5;
 	@Autowired
 	private ProductRepository repo;
-	public static final int PRODUCTS_PER_PAGE=5;
 	
 	public List<Product> listAll(){
 		return (List<Product>)repo.findAll();
