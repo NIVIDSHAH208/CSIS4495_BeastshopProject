@@ -39,6 +39,10 @@ public class CustomerService {
 		return customerRepo.findAll(pageable);
 	}
 	
+	public List<Customer> listUsersForCsv() {
+		return (List<Customer>)customerRepo.findAll(Sort.by("id").ascending());
+	}
+	
 	public void updateCustomerEnabledStatus(Integer id, boolean enabled) {
 		customerRepo.updateEnabledStatus(id, enabled);
 	}

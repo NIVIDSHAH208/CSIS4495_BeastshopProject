@@ -1,6 +1,9 @@
 package com.beastshop.admin.customer;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.Customer;
 
@@ -20,6 +22,7 @@ import com.beastshop.common.entity.Customer;
 public class CustomerController {
 	@Autowired
 	private CustomerService service;
+	
 
 	@GetMapping("/customers")
 	public String listFirstPage(Model model) {
@@ -120,6 +123,13 @@ public class CustomerController {
 		}
 		return "redirect:/customers";
 
+	}
+	
+	@GetMapping("/customers/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<Customer> listUsersForCsv = service.listUsersForCsv();
+		CustomerCsvExporter exporter = new CustomerCsvExporter();
+		exporter.export(listUsersForCsv, response);
 	}
 	
 }

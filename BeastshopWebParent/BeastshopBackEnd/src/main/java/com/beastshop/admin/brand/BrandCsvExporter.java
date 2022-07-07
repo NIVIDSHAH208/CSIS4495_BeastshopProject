@@ -20,9 +20,9 @@ public class BrandCsvExporter extends AbstractExporter{
 		// Importing csv bean writer from the super csv library
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 		// Writing header to the file
-		String[] csvHeader = { "BrandID", "Brand name", "Categories" };
+		String[] csvHeader = { "BrandID", "Brand name" };
 		// Mapping the field to the array
-		String[] categoryFieldMapping = { "id", "name","categories" };
+		String[] categoryFieldMapping = { "id", "name" };
 		csvWriter.writeHeader(csvHeader);
 		for (Brand brand : listBrands) {
 			
