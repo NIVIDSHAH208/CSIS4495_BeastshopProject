@@ -84,7 +84,8 @@ public class CustomerService {
 		}
 	}
 
-	public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode) {
+	public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode,
+			AuthenticationType authenticationType) {
 		
 		Customer customer = new Customer();
 		customer.setEmail(email);
@@ -92,7 +93,7 @@ public class CustomerService {
 		
 		customer.setEnabled(true);
 		customer.setCreatedTime(new Date());
-		customer.setAuthenticationType(AuthenticationType.GOOGLE);
+		customer.setAuthenticationType(authenticationType);
 		customer.setPassword("");
 		customer.setAddressLine1("");
 		customer.setCity("");
@@ -114,7 +115,7 @@ public class CustomerService {
 		}else {
 			String firstName = nameArray[0];
 			customer.setFirstName(firstName);
-			String lastName = name.replaceFirst(firstName, " ");
+			String lastName = name.replaceFirst(firstName+" ", "");
 			customer.setLastName(lastName);
 		}
 	}

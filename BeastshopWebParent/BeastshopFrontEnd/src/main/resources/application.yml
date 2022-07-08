@@ -14,7 +14,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
-    show-sql: true
+    show-sql: false
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
@@ -29,6 +29,12 @@ spring:
             scope: 
             - email
             - profile
+          facebook: 
+            client-id: 612963043752737
+            client-secret: 0844b36dcb959d35f185c3cae21e1c62
+            scope: 
+            - email
+            - public_profile
             
  
 
