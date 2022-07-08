@@ -33,13 +33,15 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		String email = oAuth2User.getEmail();
 		String countryCode = request.getLocale().getCountry();
 		String clientName = oAuth2User.getClientName();
-		System.out.println("OAuth2LoginSuccessHandler: "+name +" "+email);
-		System.out.println("Client name: "+clientName);
+//		System.out.println("OAuth2LoginSuccessHandler: "+name +" "+email);
+//		System.out.println("Client name: "+clientName);
 		AuthenticationType authenticationType = getAuthenticationType(clientName);
+		
 		Customer customer = customerService.getCustomerByEmail(email);
 		if(customer==null) {
 			customerService.addNewCustomerUponOAuthLogin(name, email, countryCode, authenticationType);
 		}else {
+			oAuth2User.setFullName(customer.getFullname());
 			customerService.updateAuthenticationType(customer, authenticationType);
 		}
 		

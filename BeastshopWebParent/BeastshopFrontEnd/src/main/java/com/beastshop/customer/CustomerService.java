@@ -52,9 +52,8 @@ public class CustomerService {
 //		System.out.println("Verification code is: "+randomCode);
 		customerRepo.save(customer);
 	}
-	
-	
-	//Get customer by email
+
+	// Get customer by email
 	public Customer getCustomerByEmail(String email) {
 		return customerRepo.findByEmail(email);
 	}
@@ -68,29 +67,28 @@ public class CustomerService {
 	// method to verify customer account and enable the customer
 	public boolean verify(String verificationCode) {
 		Customer customer = customerRepo.findByVerificationCode(verificationCode);
-		if(customer==null||customer.isEnabled()) {
+		if (customer == null || customer.isEnabled()) {
 			return false;
-		}else {
+		} else {
 			customerRepo.enable(customer.getId());
 			return true;
 		}
 	}
-	
-	
-	//Method to update the authentication type of the customer
+
+	// Method to update the authentication type of the customer
 	public void updateAuthenticationType(Customer customer, AuthenticationType type) {
-		if(!customer.getAuthenticationType().equals(type)) {
+		if (!customer.getAuthenticationType().equals(type)) {
 			customerRepo.updateAuthenticationType(customer.getId(), type);
 		}
 	}
 
 	public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode,
 			AuthenticationType authenticationType) {
-		
+
 		Customer customer = new Customer();
 		customer.setEmail(email);
 		setName(name, customer);
-		
+
 		customer.setEnabled(true);
 		customer.setCreatedTime(new Date());
 		customer.setAuthenticationType(authenticationType);
@@ -101,23 +99,47 @@ public class CustomerService {
 		customer.setPhoneNumber("");
 		customer.setPostalCode("");
 		customer.setCountry(countryRepo.findByCode(countryCode));
-		
+
 		customerRepo.save(customer);
 	}
-	
-	
-	//Set first and last name based on the name returned from the google login
+
+	// Set first and last name based on the name returned from the google login
 	private void setName(String name, Customer customer) {
 		String[] nameArray = name.split(" ");
-		if(nameArray.length<2) {
+		if (nameArray.length < 2) {
 			customer.setFirstName(name);
 			customer.setLastName("");
-		}else {
+		} else {
 			String firstName = nameArray[0];
 			customer.setFirstName(firstName);
-			String lastName = name.replaceFirst(firstName+" ", "");
+			String lastName = name.replaceFirst(firstName + " ", "");
 			customer.setLastName(lastName);
 		}
 	}
-	
+
+	// method to update the customer
+	public void update(Customer customerInForm) {
+		Customer customerInDb = customerRepo.findById(customerInForm.getId()).get();
+
+		if (customerInDb.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+			if (!customerInForm.getPassword().isEmpty()) {
+				String encodedPassword = passwordEncoder.encode(customerInForm.getPassword());
+				customerInForm.setPassword(encodedPassword);
+			} else {
+				customerInForm.setPassword(customerInDb.getPassword());
+			}
+		}else {
+			customerInForm.setPassword(customerInDb.getPassword());
+		}
+
+		customerInForm.setEnabled(customerInDb.isEnabled());
+		customerInForm.setCreatedTime(customerInDb.getCreatedTime());
+		customerInForm.setVerificationCode(customerInDb.getVerificationCode());
+		customerInForm.setAuthenticationType(customerInDb.getAuthenticationType());
+		
+		
+		
+		customerRepo.save(customerInForm);
+	}
+
 }
