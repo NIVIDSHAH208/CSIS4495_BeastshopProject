@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.beastshop.security.oauth.CustomerOAuth2UserService;
+import com.beastshop.security.oauth.OAuth2LoginSuccessHandler;
 
 @SuppressWarnings("deprecation")
 @Configuration
@@ -20,6 +21,8 @@ import com.beastshop.security.oauth.CustomerOAuth2UserService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired private CustomerOAuth2UserService oAuth2UserService;
+	@Autowired private OAuth2LoginSuccessHandler oAuth2LoginHandler;
+	@Autowired private DatabaseLoginSuccessHandler databaseLoginHandler;
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -51,13 +54,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 					.loginPage("/login")
 					.usernameParameter("email")
+					.successHandler(databaseLoginHandler)
 					.permitAll()
 				.and()
 				.oauth2Login()
 					.loginPage("/login")
 					.userInfoEndpoint()
 					.userService(oAuth2UserService)
-				.and()
+					.and()
+					.successHandler(oAuth2LoginHandler)
 				.and()
 				.logout().permitAll().and()
 				.rememberMe()
