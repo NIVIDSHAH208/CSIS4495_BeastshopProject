@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.beastshop.common.entity.AuthenticationType;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.Customer;
+import com.beastshop.common.exception.CustomerNotFoundException;
 import com.beastshop.setting.CountryRepository;
 
 import net.bytebuddy.utility.RandomString;
@@ -136,10 +137,40 @@ public class CustomerService {
 		customerInForm.setCreatedTime(customerInDb.getCreatedTime());
 		customerInForm.setVerificationCode(customerInDb.getVerificationCode());
 		customerInForm.setAuthenticationType(customerInDb.getAuthenticationType());
-		
+		customerInForm.setResetPasswordToken(customerInDb.getResetPasswordToken());
 		
 		
 		customerRepo.save(customerInForm);
+	}
+
+	//Method to append reset password token
+	public String updateResetPasswordToken(String email) throws CustomerNotFoundException {
+		Customer customer = customerRepo.findByEmail(email);
+		if(customer!=null) {
+			String token = RandomString.make(30);
+			customer.setResetPasswordToken(token);
+			customerRepo.save(customer);
+			return token;
+		}else {
+			throw new CustomerNotFoundException("Cound not find any customer with email: "+email);
+		}
+	}
+	
+	//method to get customer by the token
+	public Customer getByResetPasswordToken(String token) {
+		return customerRepo.findByResetPasswordToken(token);
+	}
+	
+	//method to update the password
+	public void updatePassword(String token, String newPassword) throws CustomerNotFoundException {
+		Customer customer = customerRepo.findByResetPasswordToken(token);
+		if(customer==null) {
+			throw new CustomerNotFoundException("No customer found :: Invalid Token");
+		}
+		customer.setPassword(newPassword);
+		customer.setResetPasswordToken(null);
+		encodePassword(customer);
+		customerRepo.save(customer);
 	}
 
 }

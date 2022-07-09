@@ -17,6 +17,7 @@ import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.Customer;
+import com.beastshop.common.exception.CustomerNotFoundException;
 
 @Controller
 public class CustomerController {

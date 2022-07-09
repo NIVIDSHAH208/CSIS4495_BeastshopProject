@@ -136,14 +136,24 @@ public class ProductController {
 	}
 
 	@GetMapping("/products/edit/{id}")
-	public String editProduct(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+	public String editProduct(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, @AuthenticationPrincipal BeastshopUserDetails loggedUser) {
 		try {
 			Product product = productService.get(id);
 			List<Brand> listBrands = brandService.listAll();
+			Integer numOfExtraImages = product.getImages().size();
+
+			boolean isReadOnlyForSalesperson = false;
+			
+			if (!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Editor")) {
+				if (loggedUser.hasRole("Salesperson")) {
+					isReadOnlyForSalesperson=true;
+				}
+			}
+			
+			model.addAttribute("isReadOnlyForSalesperson",isReadOnlyForSalesperson);
 			model.addAttribute("product", product);
 			model.addAttribute("listBrands", listBrands);
 			model.addAttribute("pageTitle", "Edit product (ID: " + id + ")");
-			Integer numOfExtraImages = product.getImages().size();
 			model.addAttribute("numOfExtraImages", numOfExtraImages);
 
 			return "products/product_form";

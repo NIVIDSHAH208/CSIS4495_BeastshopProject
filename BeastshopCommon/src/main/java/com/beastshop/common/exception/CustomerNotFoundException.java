@@ -1,4 +1,4 @@
-package com.beastshop.admin.customer;
+package com.beastshop.common.exception;
 
 public class CustomerNotFoundException extends Exception {
 

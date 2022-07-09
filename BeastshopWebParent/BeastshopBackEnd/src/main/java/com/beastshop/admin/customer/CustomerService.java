@@ -14,6 +14,7 @@ import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.setting.country.CountryRepository;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.Customer;
+import com.beastshop.common.exception.CustomerNotFoundException;
 
 @Service
 @Transactional
@@ -71,7 +72,7 @@ public class CustomerService {
 		customerInForm.setCreatedTime(customerInDb.getCreatedTime());
 		customerInForm.setVerificationCode(customerInDb.getVerificationCode());
 		customerInForm.setAuthenticationType(customerInDb.getAuthenticationType());
-		
+		customerInForm.setResetPasswordToken(customerInDb.getResetPasswordToken());
 		customerRepo.save(customerInForm);
 	}
 	
