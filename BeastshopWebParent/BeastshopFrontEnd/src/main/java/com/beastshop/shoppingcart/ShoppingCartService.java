@@ -2,6 +2,8 @@ package com.beastshop.shoppingcart;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,13 @@ import com.beastshop.common.entity.CartItem;
 import com.beastshop.common.entity.Customer;
 import com.beastshop.common.entity.Product;
 import com.beastshop.common.exception.ShoppingCartException;
+import com.beastshop.product.ProductRepository;
 
 @Service
+@Transactional
 public class ShoppingCartService {
 	@Autowired private CartItemRepository cartRepo;
+	@Autowired private ProductRepository productRepo;
 	
 	
 	//add product to the database
@@ -43,4 +48,15 @@ public class ShoppingCartService {
 	public List<CartItem> listCartItems(Customer customer){
 		return cartRepo.findByCustomer(customer);
 	}
+
+	//method to update the product quantity from the cart module
+	public float updateuantity(Integer productId, Integer quantity, Customer customer) {
+		cartRepo.updateQuantity(quantity, customer.getId(), productId);
+		Product product = productRepo.findById(productId).get();
+		
+		float subtotal = product.getDiscountPrice()*quantity;
+		return subtotal;
+		
+	}
+	
 }
