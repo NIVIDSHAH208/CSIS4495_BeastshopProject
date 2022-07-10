@@ -1,8 +1,5 @@
 package com.beastshop.common.entity;
 
-
-
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -22,94 +19,79 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(nullable = false, unique = true, length = 64)
 	private String email;
-	
+
 	@Column(nullable = false, length = 64)
 	private String password;
-	
-	@Column(name="first_name",nullable = false, length = 45)
+
+	@Column(name = "first_name", nullable = false, length = 45)
 	private String firstName;
-	
-	@Column(name="last_name",nullable = false, length = 45)
+
+	@Column(name = "last_name", nullable = false, length = 45)
 	private String lastName;
-	
-	@Column(name="phone_number",nullable = false, length = 15)
+
+	@Column(name = "phone_number", nullable = false, length = 15)
 	private String phoneNumber;
-	
+
 	@Column(nullable = false, length = 64)
 	private String addressLine1;
-	
-	@Column(name="address_line_2", length = 64)
+
+	@Column(name = "address_line_2", length = 64)
 	private String addressLine2;
-	
+
 	@Column(nullable = false, length = 45)
 	private String city;
-	
+
 	@Column(nullable = false, length = 45)
 	private String state;
-	
-	@Column(name="postal_code",nullable = false, length = 10)
+
+	@Column(name = "postal_code", nullable = false, length = 10)
 	private String postalCode;
-	
-	@Column(name="verification_code", length = 64)
+
+	@Column(name = "verification_code", length = 64)
 	private String verificationCode;
-	
+
 	private boolean enabled;
-	
-	@Column(name="created_time")
+
+	@Column(name = "created_time")
 	private Date createdTime;
-	
+
 	@ManyToOne
-	@JoinColumn(name="country_id")
+	@JoinColumn(name = "country_id")
 	private Country country;
-	
-	
+
 	@Enumerated(EnumType.STRING)
-	@Column(name="authentication_type", length = 10)
+	@Column(name = "authentication_type", length = 10)
 	private AuthenticationType authenticationType;
-	
-	
-	@Column(name="reset_password_token", length = 30)
+
+	@Column(name = "reset_password_token", length = 30)
 	private String resetPasswordToken;
-	
-	
-	
+
 	public String getResetPasswordToken() {
 		return resetPasswordToken;
 	}
-
-
-
 
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
 	}
 
-
-
-
 	public Customer() {
-		
+
 	}
 
-	
-	
-	
+	public Customer(Integer id) {
+		this.id=id;
+	}
+
 	public AuthenticationType getAuthenticationType() {
 		return authenticationType;
 	}
 
-
-
-
 	public void setAuthenticationType(AuthenticationType authenticationType) {
 		this.authenticationType = authenticationType;
 	}
-
-
-
 
 	public Integer getId() {
 		return id;
@@ -235,13 +217,9 @@ public class Customer {
 	public String toString() {
 		return "Customer [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
-	
-	
+
 	public String getFullname() {
-		return firstName+" "+lastName;
+		return firstName + " " + lastName;
 	}
-	
-	
-	
-	
+
 }

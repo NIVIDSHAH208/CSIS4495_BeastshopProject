@@ -105,6 +105,10 @@ public class Product {
 	public Product() {
 
 	}
+	
+	public Product(Integer id) {
+		this.id=id;
+	}
 
 	public String getMainImage() {
 		return mainImage;
@@ -302,5 +306,7 @@ public class Product {
 		}
 		return this.price;
 	}
+	
+	
 
 }
