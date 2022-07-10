@@ -1,5 +1,7 @@
 package com.beastshop.shoppingcart;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,17 @@ import com.beastshop.common.exception.ShoppingCartException;
 public class ShoppingCartService {
 	@Autowired private CartItemRepository cartRepo;
 	
+	
+	//add product to the database
 	public Integer addProduct(Integer productId, Integer quantity, Customer customer) throws ShoppingCartException {
 		Integer updatedQuantity = quantity;
+		int maxAllowedQuantity = 5;
 		Product product = new Product(productId);
 		CartItem cartItem = cartRepo.findByCustomerAndProduct(customer, product);
 		if(cartItem!=null) {
 			updatedQuantity = cartItem.getQuantity()+quantity;
-			if(updatedQuantity>5) {
-				throw new ShoppingCartException("Could not add "+quantity+" item(s). Maximum allowed quantity is 5.");
+			if(updatedQuantity>maxAllowedQuantity) {
+				throw new ShoppingCartException("Could not add "+quantity+" item(s). Maximum allowed quantity is "+maxAllowedQuantity);
 			}
 			
 		}else {
@@ -31,5 +36,11 @@ public class ShoppingCartService {
 		cartRepo.save(cartItem);
 		
 		return updatedQuantity;
+	}
+	
+	
+	//list cart item for the customer
+	public List<CartItem> listCartItems(Customer customer){
+		return cartRepo.findByCustomer(customer);
 	}
 }

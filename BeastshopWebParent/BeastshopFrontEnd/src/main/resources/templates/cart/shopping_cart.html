@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::page_head('Your cart-Beastshop','none')" />
+
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation::header_menu"></div>
+		<div th:replace="navigation::search_nav"></div>
+		<div>
+			<h2 class="text-center">Shopping cart</h2>
+		</div>
+
+		<div class="row m-1">
+			<div class="col-sm-8">
+				<th:block th:each="item, status: ${cartItems}">
+					<div class="row border rounded p-1"
+						th:with="product=${item.product}">
+						<div class="col-1">
+							<div>[[${status.count}]]</div>
+							<div>
+								<a class="fas fa-trash-can" href=""></a>
+							</div>
+						</div>
+
+						<div class="col-3">
+							<img th:src="@{${product.mainImagePath}}" class="img-fluid" />
+						</div>
+
+						<div class="col-7">
+							<div>
+								<a th:href="@{'/p/'+${product.alias}}"
+									th:title="${product.name}" target="_blank"><b>[[${product.shortName}]]</b></a>
+							</div>
+							<div
+								th:replace="cart/quantity_control::quantity_control(${item.quantity},${product.id})"></div>
+							<div>
+								<span>Product Price:&nbsp;</span>
+								<div th:replace="product/product_fragment::product_price"></div>
+							</div>
+							<div class="h4">
+								<span><b>Total for item:&nbsp;</b></span> <span
+									th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}"
+									th:remove="tag">[[${CURRENCY_SYMBOL}]][[${#numbers.formatDecimal(item.subtotal,
+									1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span>
+								<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
+									th:remove="tag">[[${#numbers.formatDecimal(item.subtotal,
+									1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS,
+									DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]</span>
+							</div>
+						</div>
+					</div>
+					<div class="row m-1">&nbsp;</div>
+				</th:block>
+			</div>
+
+			<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}">
+				<div class="border border-secondary rounded p-2">
+					<div>
+						<span class="h3">Estimated Total:</span>
+					</div>
+					<div class="mt-2 h3">
+						<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}"
+							th:remove="tag">[[${CURRENCY_SYMBOL}]][[${#numbers.formatDecimal(estimatedTotal,
+							1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span> <span
+							th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
+							th:remove="tag">[[${#numbers.formatDecimal(estimatedTotal,
+							1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS,
+							DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]</span>
+					</div>
+					
+					<div class="mt-2">
+						<button class="btn btn-success p-2">Checkout</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="text-center border border-secondary rounded m-3"
+			th:if="${#lists.isEmpty(cartItems)}">
+			<div>
+				<h2>
+					Cart empty!<br>
+				</h2>
+			</div>
+			<div>
+				<h3>Please add items to the cart in order for them to reflect
+					here.</h3>
+			</div>
+		</div>
+
+
+		<div th:replace="navigation::footer_menu"></div>
+	</div>
+</body>
+</html>
