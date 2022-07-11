@@ -12,12 +12,46 @@
  		evt.preventDefault();
  		increaseQuantity($(this));
  	});
+ 	
+ 	$(".linkRemove").on("click", function(evt){
+ 		evt.preventDefault();
+ 		removeProduct($(this))
+ 	});
  });
+ 
+ function removeProductHTML(rowNumber){
+ 	$("#row"+rowNumber).remove()
+ 	$("#blankLine"+rowNumber).remove()
+ }
+ 
+ function removeProduct(link){
+ 	url = link.attr("href");
+ 	$.ajax({
+		type:"DELETE",
+		url: url,
+		beforeSend: function(xhr){
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		}
+	}).done(function(response){
+		rowNumber=link.attr("rowNumber")
+		removeProductHTML(rowNumber);
+		updateTotal();
+		updateCountNumbers();
+		showModalDialog("Product removed", response);
+	}).fail(function(){
+		showErrorModal("Server encountered an error while deleting product from the cart");
+	});
+ }
+ 
+ 
+ function updateCountNumbers(){
+ 	$(".divCount").each(function(index, element){
+ 		element.innerHTML=""+(index+1);
+ 	});
+ }
  
  
  function updateQuantity(productId, quantity){
- 	
-	
 	//making an ajax call
 	url = contextPath+"cart/update/"+productId+"/"+quantity;
 	
@@ -66,12 +100,25 @@
  
  function updateTotal(){
  	totalPrice=0.0;
+ 	productCount=0;
+ 	
  	$(".subtotal").each(function(index, element){
+ 		productCount++;
  		numFinalTotal = element.innerHTML.replaceAll(",","");
  		totalPrice+=parseFloat(numFinalTotal);
  	});
- 	formattedTotal = $.number(totalPrice,2)
- 	$("#finalTotal").text(formattedTotal);
+ 	
+ 	if (productCount < 1){
+ 		showEmptyShoppingCart();
+ 	}else{
+ 		formattedTotal = $.number(totalPrice,2)
+ 		$("#finalTotal").text(formattedTotal);
+ 	}
+ }
+ 
+ function showEmptyShoppingCart(){
+	$("#sectionTotal").hide()
+	$("#sectionEmptyCartMessage").removeClass("d-none");
  }
  
  
