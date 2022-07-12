@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +38,8 @@ public class ProductController {
 			Page<Product> pageProducts = productService.listByCategory(pageNum, category.getId());
 			List<Product> listProducts = pageProducts.getContent();
 
-			long startCount = (pageNum - 1) * productService.PRODUCTS_PER_PAGE + 1;
-			long endCount = startCount + productService.PRODUCTS_PER_PAGE - 1;
+			long startCount = (pageNum - 1) * ProductService.PRODUCTS_PER_PAGE + 1;
+			long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
 
 			if (endCount > pageProducts.getTotalElements()) {
 				endCount = pageProducts.getTotalElements();
@@ -84,20 +83,20 @@ public class ProductController {
 	
 	//Default first search page
 	@GetMapping("/search")
-	public String searchFirstPage(@Param("keyword") String keyword, Model model) {
+	public String searchFirstPage( String keyword, Model model) {
 		return searchByPage(keyword,1,model);
 	}
 	
 	
 	//Method for product search by keyword
 	@GetMapping("/search/page/{pageNum}")
-	public String searchByPage(@Param("keyword") String keyword,@PathVariable("pageNum") int pageNum, Model model) {
+	public String searchByPage( String keyword,@PathVariable("pageNum") int pageNum, Model model) {
 		
 		Page<Product> pageProducts = productService.search(keyword, pageNum);
 		List<Product> listResult = pageProducts.getContent();
 		
-		long startCount = (pageNum - 1) * productService.PRODUCTS_SEARCH_RESULTS_PAGE + 1;
-		long endCount = startCount + productService.PRODUCTS_SEARCH_RESULTS_PAGE - 1;
+		long startCount = (pageNum - 1) * ProductService.PRODUCTS_SEARCH_RESULTS_PAGE + 1;
+		long endCount = startCount + ProductService.PRODUCTS_SEARCH_RESULTS_PAGE - 1;
 
 		if (endCount > pageProducts.getTotalElements()) {
 			endCount = pageProducts.getTotalElements();

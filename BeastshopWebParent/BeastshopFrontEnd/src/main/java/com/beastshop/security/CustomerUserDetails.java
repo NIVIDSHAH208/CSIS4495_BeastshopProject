@@ -8,6 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.beastshop.common.entity.Customer;
 
 public class CustomerUserDetails implements UserDetails {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Customer customer;
 	
 	
