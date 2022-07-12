@@ -2,6 +2,10 @@
  * Nivid
  */
  
+ decimalDigits;
+ decimalSeparator = decimalPointType == "COMMA"?',':'.';
+ thousandsSeparator = thousandsPointType == "COMMA"?',':'.';
+ 
  $(document).ready(function(){
  	$(".linkMinus").on("click", function(evt){
  		evt.preventDefault();
@@ -94,8 +98,7 @@
  }
  
  function updateSubtotal(updatesSubtotal, productId){
- 	formattedSubtotal = $.number(updatesSubtotal,2);
- 	$("#subtotal"+productId).text(formattedSubtotal)
+ 	$("#subtotal"+productId).text(formatCurrency(updatesSubtotal))
  }
  
  function updateTotal(){
@@ -104,21 +107,29 @@
  	
  	$(".subtotal").each(function(index, element){
  		productCount++;
- 		numFinalTotal = element.innerHTML.replaceAll(",","");
+ 		numFinalTotal = clearCurrencyFormat(element.innerHTML);
  		totalPrice+=parseFloat(numFinalTotal);
  	});
  	
  	if (productCount < 1){
  		showEmptyShoppingCart();
  	}else{
- 		formattedTotal = $.number(totalPrice,2)
- 		$("#finalTotal").text(formattedTotal);
+ 		$("#finalTotal").text(formatCurrency(totalPrice));
  	}
  }
  
  function showEmptyShoppingCart(){
 	$("#sectionTotal").hide()
 	$("#sectionEmptyCartMessage").removeClass("d-none");
+ }
+ 
+ function formatCurrency(amount){
+ 	return $.number(amount, decimalDigits, decimalSeparator, thousandsSeparator)
+ }
+ 
+ function clearCurrencyFormat(numberString){
+ 	result = numberString.replaceAll(thousandsSeparator,"");
+ 	return result.replaceAll(decimalSeparator,".");
  }
  
  
