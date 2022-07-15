@@ -1,5 +1,7 @@
 package com.beastshop.admin.order;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +42,13 @@ public class OrderService {
 			page=repo.findAll(pageable);
 		}
 		helper.updateModelAttributes(pageNum, page);
-		
+	}
+	
+	public Order get(Integer id) throws OrderNotFoundException{
+		try {
+			return repo.findById(id).get();
+		}catch (NoSuchElementException e) {
+			throw new OrderNotFoundException("Could not find any product with ID: "+id);
+		}
 	}
 }
