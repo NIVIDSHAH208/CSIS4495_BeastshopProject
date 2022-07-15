@@ -1,5 +1,6 @@
 package com.beastshop.common.entity;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -274,6 +275,17 @@ public class Order {
 	}
 
 	
+	@Transient
+	public String getDestination() {
+		String destination = city+", ";
+		if(state!=null&&!state.isEmpty()) {
+			destination+=state+", ";
+		}
+		destination+=country;
+		
+		
+		return destination;
+	}
 	
 	
 	

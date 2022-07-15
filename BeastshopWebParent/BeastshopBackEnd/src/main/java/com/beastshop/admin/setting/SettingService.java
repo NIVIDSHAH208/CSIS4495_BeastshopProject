@@ -48,5 +48,10 @@ public class SettingService {
 		return repo.findByCategory(SettingCategory.MAIL_TEMPLATES);
 	}
 	
+	//method that will return a list of mail template settings
+		public List<Setting> getCurrencySettings(){
+			return repo.findByCategory(SettingCategory.CURRENCY);
+		}
+	
 	
 }
