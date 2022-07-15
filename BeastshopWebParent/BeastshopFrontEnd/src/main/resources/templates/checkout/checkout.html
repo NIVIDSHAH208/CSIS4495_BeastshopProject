@@ -17,13 +17,17 @@
 						<h5>Shipping information</h5>
 					</div>
 					<div class="card-body">
-						<p><b>Ship to: </b>[[${shippingAddress}]]
-						<a th:href="@{/address_book(redirect=checkout)}">[Ship to another address]</a></p>
+						<p>
+							<b>Ship to: </b>[[${shippingAddress}]] <a
+								th:href="@{/address_book(redirect=checkout)}">[Ship to
+								another address]</a>
+						</p>
 						<p>
 							<b>Days to deliver: </b>[[${checkoutInfo.deliverDays}]] day(s)
 						</p>
 						<p>
-							<b>Expected deliver date: </b>[[${#dates.format(checkoutInfo.getDeliverDate(),'E, dd MMM yyyy')}]]
+							<b>Expected deliver date: </b>[[${#dates.format(checkoutInfo.getDeliverDate(),'E,
+							dd MMM yyyy')}]]
 						</p>
 					</div>
 				</div>
@@ -34,10 +38,14 @@
 					</div>
 					<div class="card-body">
 						<div th:if="${checkoutInfo.codSupported}">
-							<p>
-							<input type="radio" /> Cash on Delivery(COD):&nbsp;
-							<button class="btn btn-success">Place order with COD</button>
-							</p>
+							<form th:action="@{/place_order}" method="post">
+								<p>
+									<input type="radio" name="paymentMethod" id="radioCOD" value="COD" /> Cash on
+									Delivery(COD)&nbsp;
+									<button class="btn btn-success d-none" type="submit" id="buttonSubmit">Place order
+										with COD</button>
+								</p>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -49,48 +57,51 @@
 						<h5>Order summary</h5>
 					</div>
 					<div class="card-body">
-					
+
 						<div>
 							<table>
 								<th:block th:each="item:${cartItems}">
 									<tr th:with="product = ${item.product}">
 										<td>[[${item.quantity}]] X &nbsp;&nbsp;</td>
-										<td width="75%">
-										<a th:href="@{'/p/'+${product.alias}}" target="_blank">[[${product.shortName}]]</a>
-										<br/>
-										<small>Ship: <div th:replace="fragments::format_currency(${item.shippingCost})"></div></small>
-										</td>
+										<td width="75%"><a th:href="@{'/p/'+${product.alias}}"
+											target="_blank">[[${product.shortName}]]</a> <br /> <small>Ship:
+												<div
+													th:replace="fragments::format_currency(${item.shippingCost})"></div>
+										</small></td>
 										<td>
-											<div th:replace="fragments::format_currency(${item.subtotal})"></div>
+											<div
+												th:replace="fragments::format_currency(${item.subtotal})"></div>
 										</td>
 									</tr>
 								</th:block>
 								<tr>
-								<td colspan="3"><hr/></td>
+									<td colspan="3"><hr /></td>
 								</tr>
 							</table>
 						</div>
 						<div class="row mt-2">
 							<div class="col">Product Total:</div>
 							<div class="col">
-								<div th:replace="fragments::format_currency(${checkoutInfo.productTotal})"></div>
+								<div
+									th:replace="fragments::format_currency(${checkoutInfo.productTotal})"></div>
 							</div>
 						</div>
-						
+
 						<div class="row mt-2">
 							<div class="col">Shipping cost:</div>
 							<div class="col">
-								<div th:replace="fragments::format_currency(${checkoutInfo.shippingCostTotal})"></div>
+								<div
+									th:replace="fragments::format_currency(${checkoutInfo.shippingCostTotal})"></div>
 							</div>
 						</div>
-						
+
 						<div class="row mt-2">
 							<div class="col">Payment Total:</div>
 							<div class="col">
 								<b><div th:replace="fragments::format_currency(${checkoutInfo.paymentTotal})"></div></b>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -98,5 +109,18 @@
 
 		<div th:replace="navigation::footer_menu"></div>
 	</div>
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		
+		$(document).ready(function(){
+			$("#radioCOD").on("click", function(){
+				$("#buttonSubmit").removeClass("d-none");
+			})
+			
+		})
+		
+	</script>
 </body>
 </html>
