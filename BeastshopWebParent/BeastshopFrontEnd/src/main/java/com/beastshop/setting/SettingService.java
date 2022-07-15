@@ -28,6 +28,11 @@ public class SettingService {
 		return new EmailSettingBag(settings);
 	}
 	
+	public CurrencySettingBag getCurrencySetting() {
+		List<Setting> settings = repo.findByCategory(SettingCategory.CURRENCY);
+		return new CurrencySettingBag(settings);
+	}
+	
 
 	
 	
