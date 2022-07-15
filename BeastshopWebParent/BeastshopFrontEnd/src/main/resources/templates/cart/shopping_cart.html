@@ -18,7 +18,9 @@
 						<div class="col-1">
 							<div class="divCount">[[${status.count}]]</div>
 							<div>
-								<a class="fas fa-trash-can linkRemove icon-red" th:rowNumber="${status.count}" th:href="@{'/cart/remove/'+${product.id}}"></a>
+								<a class="fas fa-trash-can linkRemove icon-red"
+									th:rowNumber="${status.count}"
+									th:href="@{'/cart/remove/'+${product.id}}"></a>
 							</div>
 						</div>
 
@@ -41,9 +43,9 @@
 								<span><b>Total for item:&nbsp;</b></span> <span
 									th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}"
 									th:remove="tag">[[${CURRENCY_SYMBOL}]]</span> <span
-									th:id="'subtotal'+${product.id}" class="subtotal">[[${#numbers.formatDecimal(item.subtotal, 1,
-									THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span> <span
-									th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
+									th:id="'subtotal'+${product.id}" class="subtotal">[[${#numbers.formatDecimal(item.subtotal,
+									1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span>
+								<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
 									th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 							</div>
 						</div>
@@ -52,27 +54,44 @@
 				</th:block>
 			</div>
 
-			<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}" id="sectionTotal">
+			<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}"
+				id="sectionTotal">
 				<div class="border border-secondary rounded p-2">
 					<div>
 						<span class="h3">Estimated Total:</span>
 					</div>
 					<div class="mt-2 h3">
 						<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}"
-							th:remove="tag">[[${CURRENCY_SYMBOL}]]<span id="finalTotal">[[${#numbers.formatDecimal(estimatedTotal,
+							th:remove="tag">[[${CURRENCY_SYMBOL}]]<span
+							id="finalTotal">[[${#numbers.formatDecimal(estimatedTotal,
 								1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span></span>
 						<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
 							th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 					</div>
 
 					<div class="mt-2">
-						<button class="btn btn-success p-2">Checkout</button>
+						<div th:if="${shippingSupported}">
+							<button class="btn btn-success p-2">Checkout</button>
+						</div>
+						<div th:unless=${shippingSupported}>
+							<div>
+								<span class="h5 text-warning">No shipping available for
+									your location!</span>
+							</div>
+							<div th:if="${usePrimaryAddressAsDefault}">
+								<a th:href="@{/account_details(redirect=cart)}" class="h6">Update your address</a>
+							</div>
+							<div th:unless="${usePrimaryAddressAsDefault}">
+								<a th:href="@{/address_book(redirect=cart)}" class="h6">Use another shipping address</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div id="sectionEmptyCartMessage" th:class="'text-center border border-secondary rounded ' + ${#lists.isEmpty(cartItems)?'':'d-none'}">
+		<div id="sectionEmptyCartMessage"
+			th:class="'text-center border border-secondary rounded ' + ${#lists.isEmpty(cartItems)?'':'d-none'}">
 			<div>
 				<h2>
 					Cart empty!<br>
@@ -84,7 +103,7 @@
 			</div>
 		</div>
 
-		
+
 		<div th:replace="fragments::modal_dialog"></div>
 		<div th:replace="navigation::footer_menu"></div>
 	</div>
