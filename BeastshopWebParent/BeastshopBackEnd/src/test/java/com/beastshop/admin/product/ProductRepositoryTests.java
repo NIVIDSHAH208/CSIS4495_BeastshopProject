@@ -15,7 +15,7 @@ import org.springframework.test.annotation.Rollback;
 
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Category;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)

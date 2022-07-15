@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.beastshop.admin.paging.PagingAndSortingHelper;
-import com.beastshop.common.entity.Order;
+import com.beastshop.common.entity.order.Order;
 
 @Service
 public class OrderService {

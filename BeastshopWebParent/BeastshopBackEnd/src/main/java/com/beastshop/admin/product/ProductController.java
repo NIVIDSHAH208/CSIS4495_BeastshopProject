@@ -21,7 +21,7 @@ import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.admin.security.BeastshopUserDetails;
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Category;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.exception.ProductNotFoundException;
 
 @Controller

@@ -14,11 +14,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import com.beastshop.common.entity.Customer;
-import com.beastshop.common.entity.Order;
-import com.beastshop.common.entity.OrderDetail;
-import com.beastshop.common.entity.OrderStatus;
-import com.beastshop.common.entity.PaymentMethod;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.order.Order;
+import com.beastshop.common.entity.order.OrderDetail;
+import com.beastshop.common.entity.order.OrderStatus;
+import com.beastshop.common.entity.order.PaymentMethod;
+import com.beastshop.common.entity.product.Product;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)

@@ -14,7 +14,7 @@ import org.springframework.test.annotation.Rollback;
 
 import com.beastshop.common.entity.CartItem;
 import com.beastshop.common.entity.Customer;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 
 
 

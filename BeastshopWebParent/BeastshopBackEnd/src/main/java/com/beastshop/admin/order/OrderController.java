@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.admin.setting.SettingService;
-import com.beastshop.common.entity.Order;
-import com.beastshop.common.entity.Setting;
+import com.beastshop.common.entity.order.Order;
+import com.beastshop.common.entity.setting.Setting;
 
 @Controller
 public class OrderController {

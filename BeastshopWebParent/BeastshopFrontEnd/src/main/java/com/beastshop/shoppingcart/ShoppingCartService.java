@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.beastshop.common.entity.CartItem;
 import com.beastshop.common.entity.Customer;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.exception.ShoppingCartException;
 import com.beastshop.product.ProductRepository;
 

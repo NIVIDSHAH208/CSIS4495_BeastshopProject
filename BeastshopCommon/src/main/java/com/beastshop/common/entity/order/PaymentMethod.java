@@ -1,4 +1,4 @@
-package com.beastshop.common.entity;
+package com.beastshop.common.entity.order;
 
 public enum PaymentMethod {
 	COD, CREDIT_CARD

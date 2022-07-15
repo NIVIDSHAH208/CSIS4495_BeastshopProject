@@ -1,4 +1,4 @@
-package com.beastshop.common.entity;
+package com.beastshop.common.entity.product;
 
 import java.beans.Transient;
 import java.util.ArrayList;
@@ -11,20 +11,19 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.beastshop.common.entity.Brand;
+import com.beastshop.common.entity.Category;
+import com.beastshop.common.entity.IdBasedEntity;
+
 @Entity
 @Table(name = "products")
-public class Product {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class Product extends IdBasedEntity{
+	
 
 	@Column(unique = true, length = 256, nullable = false)
 	private String name;
@@ -118,13 +117,7 @@ public class Product {
 		this.mainImage = mainImage;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 
 	public String getName() {
 		return name;

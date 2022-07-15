@@ -4,19 +4,14 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="shipping_rates")
-public class ShippingRate {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ShippingRate extends IdBasedEntity{
+	
 	
 	private float rate;
 	
@@ -32,13 +27,7 @@ public class ShippingRate {
 	@Column(nullable = false, length = 45)
 	private String state;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 
 	public float getRate() {
 		return rate;

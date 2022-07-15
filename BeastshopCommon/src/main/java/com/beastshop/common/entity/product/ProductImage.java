@@ -1,22 +1,19 @@
-package com.beastshop.common.entity;
+package com.beastshop.common.entity.product;
 
 import java.beans.Transient;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.beastshop.common.entity.IdBasedEntity;
+
 @Entity
 @Table(name="product_images")
-public class ProductImage {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ProductImage extends IdBasedEntity{
+	
 	
 	@Column(nullable = false)
 	private String name;
@@ -42,13 +39,7 @@ public class ProductImage {
 		this.product = product;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 
 	public String getName() {
 		return name;

@@ -1,4 +1,4 @@
-package com.beastshop.common.entity;
+package com.beastshop.common.entity.setting;
 
 import java.util.Objects;
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.beastshop.common.entity.Setting;
+import com.beastshop.common.entity.setting.Setting;
 
 
 //Declaring it as a part of component so we can get autowired to work

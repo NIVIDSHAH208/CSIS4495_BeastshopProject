@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.beastshop.category.CategoryService;
 import com.beastshop.common.entity.Category;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.exception.CategoryNotFoundException;
 import com.beastshop.common.exception.ProductNotFoundException;
 

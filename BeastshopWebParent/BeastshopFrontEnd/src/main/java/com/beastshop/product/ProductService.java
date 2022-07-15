@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.exception.ProductNotFoundException;
 
 @Service

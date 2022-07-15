@@ -13,8 +13,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.beastshop.admin.FileUploadUtil;
-import com.beastshop.common.entity.Product;
-import com.beastshop.common.entity.ProductImage;
+import com.beastshop.common.entity.product.Product;
+import com.beastshop.common.entity.product.ProductImage;
 
 
 //Class for extra methods

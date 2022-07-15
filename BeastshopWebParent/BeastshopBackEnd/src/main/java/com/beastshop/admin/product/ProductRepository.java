@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer> {
 	public Product findByName(String name);

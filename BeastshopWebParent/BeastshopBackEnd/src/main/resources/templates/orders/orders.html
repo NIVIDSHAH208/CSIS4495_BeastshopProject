@@ -22,21 +22,20 @@
 						<th
 							th:replace="fragments::column_link('customer', 'Customer','none')" />
 						<th th:replace="fragments::column_link('total', 'Total','none')" />
-						
+
 						<th
 							th:replace="fragments::column_link('orderTime', 'Order time','none')" />
-						
-						
-						<th
-							th:replace="fragments::column_link('destination', 'Destination','none')" />
-						
-						
-						<th
-							th:replace="fragments::column_link('paymentMethod', 'Payment Method','none')" />
-						
 
-						<th th:replace="fragments::column_link('status', 'Status','none')" />
-
+						<th class="hideable-column">
+							<th th:replace="fragments::column_link('destination', 'Destination','tag')">
+						</th>
+						<th class="hideable-column">
+						<th
+							th:replace="fragments::column_link('paymentMethod', 'Payment Method','tag')" />
+						</th>
+						<th class="hideable-column">
+						<th th:replace="fragments::column_link('status', 'Status','tag')" />
+						</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -47,22 +46,24 @@
 						<td><a class="linkCustomerDetail"
 							th:href="@{'/customers/detail/'+${order.customer.id}}">[[${order.customer.fullname}]]</a>
 						</td>
-						
+
 						<td>
 							<div th:replace="fragments::format_currency(${order.total})"></div>
 						</td>
-						
+
 						<td>
 							<div th:replace="fragments::format_time(${order.orderTime})"></div>
 						</td>
-						
-						<td>[[${order.destination}]]</td>
-						<td>[[${order.paymentMethod}]]</td>
-						<td>[[${order.status}]]</td>
 
-					
 
-						<td><a class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
+						<td class="hideable-column">[[${order.destination}]]</td>
+						<td class="hideable-column">[[${order.paymentMethod}]]</td>
+						<td class="hideable-column">[[${order.status}]]</td>
+
+
+
+						<td><a
+							class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
 							title="View detail of this order"
 							th:href="@{'/orders/detail/'+${order.id}}"></a> &nbsp;
 							<div
@@ -78,6 +79,39 @@
 		</div>
 
 
+		<div class="less-details">
+			<th:block th:each="order:${listOrders}">
+				<div class="row m-1">
+					<div class="col-2">[[${order.id}]]</div>
+					<div class="col-10">
+						<div>[[${order.customer.fullname}]], [[${order.country}]]</div>
+						<div>
+							<small>[[${order.orderTime}]] - [[${order.status}]]</small>
+						</div>
+						<div>
+							<div th:replace="fragments::format_currency(${order.total})">Total</div>
+							- [[${order.paymentMethod}]]
+						</div>
+						<div>
+							<a class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
+								title="View detail of this order"
+								th:href="@{'/orders/detail/'+${order.id}}"></a> &nbsp;
+							<div
+								th:replace="fragments::edit('order','/orders/edit/'+${order.id})"></div>
+							&nbsp;
+							<div
+								th:replace="fragments::delete('order', ${order.id},'/orders/delete/'+${order.id}, true)"></div>
+						</div>
+					</div>
+				</div>
+				<div>&nbsp;</div>
+			</th:block>
+
+		</div>
+
+		<div></div>
+
+
 		<div th:replace="fragments::pagination('orders')"></div>
 
 
@@ -88,7 +122,7 @@
 				<div class="modal-content"></div>
 			</div>
 		</div>
-		
+
 		<div class="modal fade" id="orderDetailModal">
 			<div class="modal-dialog modal-xl">
 				<div class="modal-content"></div>
@@ -101,36 +135,42 @@
 	<script th:src="@{/js/common_list.js}"></script>
 	<script type="text/javascript">
 		moduleURL = "[[@{/orders}]]";
-		
-		$(document).ready(function(){
-			
+
+		$(document).ready(function() {
+
 			handleLinkViewCustomerDetails();
 			handleLinkViewOrderDetails();
 			handleLinkDeleteOrder();
 		});
-		
-		function handleLinkViewCustomerDetails(){
-			$(".linkCustomerDetail").on("click", function(e){
-				e.preventDefault();
-				linkDetailURL = $(this).attr("href")
-				$("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
-			});
-			
+
+		function handleLinkViewCustomerDetails() {
+			$(".linkCustomerDetail").on(
+					"click",
+					function(e) {
+						e.preventDefault();
+						linkDetailURL = $(this).attr("href")
+						$("#detailModal").modal("show").find(".modal-content")
+								.load(linkDetailURL);
+					});
+
 		}
-		
-		function handleLinkViewOrderDetails(){
-			$(".linkOrderDetail").on("click", function(e){
-				e.preventDefault();
-				linkDetailURL = $(this).attr("href")
-				$("#orderDetailModal").modal("show").find(".modal-content").load(linkDetailURL);
-			});
-			
+
+		function handleLinkViewOrderDetails() {
+			$(".linkOrderDetail").on(
+					"click",
+					function(e) {
+						e.preventDefault();
+						linkDetailURL = $(this).attr("href")
+						$("#orderDetailModal").modal("show").find(
+								".modal-content").load(linkDetailURL);
+					});
+
 		}
-		
-		function handleLinkDeleteOrder(){
-			$(".link-delete").on("click", function(e){
+
+		function handleLinkDeleteOrder() {
+			$(".link-delete").on("click", function(e) {
 				e.preventDefault();
-				showDeleteConfirmModal($(this),'order');
+				showDeleteConfirmModal($(this), 'order');
 			})
 		}
 	</script>

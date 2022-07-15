@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.beastshop.common.entity.CartItem;
 import com.beastshop.common.entity.Customer;
-import com.beastshop.common.entity.Product;
+import com.beastshop.common.entity.product.Product;
 
 public interface CartItemRepository extends CrudRepository< CartItem, Integer> {
 	

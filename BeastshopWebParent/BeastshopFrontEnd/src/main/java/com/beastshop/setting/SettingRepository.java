@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.beastshop.common.entity.Setting;
-import com.beastshop.common.entity.SettingCategory;
+import com.beastshop.common.entity.setting.Setting;
+import com.beastshop.common.entity.setting.SettingCategory;
 
 public interface SettingRepository extends CrudRepository<Setting, String> {
 	
