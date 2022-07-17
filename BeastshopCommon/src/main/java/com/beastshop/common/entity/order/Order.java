@@ -1,8 +1,10 @@
 package com.beastshop.common.entity.order;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +15,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.beastshop.common.entity.AbstractAddress;
@@ -51,6 +54,15 @@ public class Order extends AbstractAddress{
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<OrderDetail> orderDetails = new HashSet<>();
 	
+	
+	//using list as we want to maintain the order of the element, what is first, what is next
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OrderBy("updatedTime DESC")
+	private List<OrderTrack> orderTracks = new ArrayList<>();
+	
+	
+	
+
 	public Order() {
 		
 	}
@@ -157,6 +169,14 @@ public class Order extends AbstractAddress{
 
 	public void setOrderDetails(Set<OrderDetail> orderDetails) {
 		this.orderDetails = orderDetails;
+	}
+	
+	public List<OrderTrack> getOrderTracks() {
+		return orderTracks;
+	}
+
+	public void setOrderTracks(List<OrderTrack> orderTracks) {
+		this.orderTracks = orderTracks;
 	}
 	
 	public void copyAddressFromCustomer() {

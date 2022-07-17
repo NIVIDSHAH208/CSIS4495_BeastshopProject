@@ -3,6 +3,7 @@ package com.beastshop.admin.order;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import com.beastshop.common.entity.Customer;
 import com.beastshop.common.entity.order.Order;
 import com.beastshop.common.entity.order.OrderDetail;
 import com.beastshop.common.entity.order.OrderStatus;
+import com.beastshop.common.entity.order.OrderTrack;
 import com.beastshop.common.entity.order.PaymentMethod;
 import com.beastshop.common.entity.product.Product;
 
@@ -145,4 +147,32 @@ public class OrderRepositoryTest {
 		assertThat(findById).isNotPresent();
 		
 	}
+	
+	@Test
+	public void testUpdateOrderTracks() {
+		Integer orderId=11;
+		
+		Order order = repo.findById(orderId).get();
+		OrderTrack newTrack = new OrderTrack();
+		newTrack.setOrder(order);
+		newTrack.setUpdatedTime(new Date());
+		newTrack.setStatus(OrderStatus.PACKAGED);
+		newTrack.setNotes(OrderStatus.PACKAGED.defaultDescription());
+		
+		OrderTrack newTrack1 = new OrderTrack();
+		newTrack1.setOrder(order);
+		newTrack1.setUpdatedTime(new Date());
+		newTrack1.setStatus(OrderStatus.PICKED);
+		newTrack1.setNotes(OrderStatus.PICKED.defaultDescription());
+		
+		List<OrderTrack> orderTracks = order.getOrderTracks();
+		orderTracks.add(newTrack);
+		orderTracks.add(newTrack1);
+		
+		Order updatedOrder = repo.save(order);
+		
+		assertThat(updatedOrder.getOrderTracks()).hasSizeGreaterThan(1);
+	}
+	
+	
 }
