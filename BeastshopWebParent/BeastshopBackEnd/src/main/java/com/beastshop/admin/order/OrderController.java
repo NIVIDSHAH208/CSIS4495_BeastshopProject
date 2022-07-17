@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.admin.setting.SettingService;
+import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.order.Order;
 import com.beastshop.common.entity.setting.Setting;
 
@@ -72,6 +73,26 @@ public class OrderController {
 			ra.addFlashAttribute("message", e.getMessage());
 		}
 		return defaultRedirectURL;
+	}
+	
+	
+	@GetMapping("/orders/edit/{id}")
+	public String editOrder(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, HttpServletRequest request) {
+		try {
+			Order order = orderService.get(id);
+			List<Country> listCountries=orderService.listAllCountries();
+			
+			model.addAttribute("listCountries",listCountries);
+			model.addAttribute("order",order);
+			model.addAttribute("pageTitle","Edit order (ID: "+id+")");
+			
+			return "orders/order_form";
+			
+		}catch (OrderNotFoundException e) {
+			// TODO: handle exception
+			ra.addFlashAttribute("message", e.getMessage());
+			return defaultRedirectURL;
+		}
 	}
 	
 }

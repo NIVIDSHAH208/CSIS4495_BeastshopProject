@@ -1,5 +1,6 @@
 package com.beastshop.admin.order;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.beastshop.admin.paging.PagingAndSortingHelper;
+import com.beastshop.admin.setting.country.CountryRepository;
+import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.order.Order;
 
 @Service
@@ -17,6 +20,7 @@ public class OrderService {
 	private static final int ORDERS_PER_PAGE=10;
 	
 	@Autowired private OrderRepository repo;
+	@Autowired private CountryRepository countryRepo;
 	
 	public void listByPage(int pageNum, PagingAndSortingHelper helper) {
 		String sortField = helper.getSortField();
@@ -59,5 +63,9 @@ public class OrderService {
 		}
 		repo.deleteById(id);
 		
+	}
+
+	public List<Country> listAllCountries() {
+		return countryRepo.findAllByOrderByNameAsc();
 	}
 }
