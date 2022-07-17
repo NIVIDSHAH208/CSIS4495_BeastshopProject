@@ -8,6 +8,7 @@
 		<div th:replace="navigation::search_nav"></div>
 		<div class="text-center">
 			<h1>Checkout</h1>
+
 		</div>
 
 		<div class="row m-1">
@@ -40,13 +41,15 @@
 						<div th:if="${checkoutInfo.codSupported}">
 							<form th:action="@{/place_order}" method="post">
 								<p>
-									<input type="radio" name="paymentMethod" id="radioCOD" value="COD" /> Cash on
-									Delivery(COD)&nbsp;
-									<button class="btn btn-success d-none" type="submit" id="buttonSubmit">Place order
-										with COD</button>
+									<input type="radio" name="paymentMethod" id="radioCOD"
+										value="COD" /> Cash on Delivery(COD)&nbsp;
+									<button class="btn btn-success d-none" type="submit"
+										id="buttonSubmit">Place order with COD</button>
 								</p>
 							</form>
 						</div>
+
+						<div id="paypalButtonContainer"></div>
 					</div>
 				</div>
 			</div>
@@ -98,7 +101,8 @@
 						<div class="row mt-2">
 							<div class="col">Payment Total:</div>
 							<div class="col">
-								<b><div th:replace="fragments::format_currency(${checkoutInfo.paymentTotal})"></div></b>
+								<b><div
+										th:replace="fragments::format_currency(${checkoutInfo.paymentTotal})"></div></b>
 							</div>
 						</div>
 
@@ -109,18 +113,79 @@
 
 		<div th:replace="navigation::footer_menu"></div>
 	</div>
+	<script
+		th:src="@{https://www.paypal.com/sdk/js(client-id=${paypalCliendId}, currency=${currencyCode})}"></script>
 	<script type="text/javascript">
 		contextPath = "[[@{/}]]";
 		var csrfHeaderName = "[[${_csrf.headerName}]]";
 		var csrfValue = "[[${_csrf.token}]]";
-		
-		$(document).ready(function(){
-			$("#radioCOD").on("click", function(){
+
+		$(document).ready(function() {
+			$("#radioCOD").on("click", function() {
 				$("#buttonSubmit").removeClass("d-none");
 			})
-			
-		})
-		
+
+		});
+
+		paypal.Buttons({
+			enableStandardCardFields: true,
+			createOrder : function(data, actions) {
+				//setup the transaction
+				return actions.order.create({
+					
+					intent : 'CAPTURE', //make payment as soon as possible
+					payer : {
+						name : {
+							given_name : "[[${customer.firstName}]]",
+							surname : "[[${customer.lastName}]]"
+						},
+
+						address : {
+							address_line_1 : "[[${customer.addressLine1}]]",
+							address_line_2 : "[[${customer.addressLine2}]]",
+							admin_area_1 : "[[${customer.state}]]",
+							admin_area_2 : "[[${customer.city}]]",
+							postal_code : "[[${customer.postalCode}]]",
+							country_code : "[[${customer.country.code}]]"
+						},
+						email_address : "[[${customer.email}]]",
+						phone : {
+							phone_type : "MOBILE",
+							phone_number : {
+								national_number : "[[${customer.phoneNumber}]]"
+							}
+						}
+					},
+					purchase_units:[{
+						amount:{
+							value: "[[${checkoutInfo.paymentTotalForPaypal}]]",
+							currency_code: "[[${currencyCode}]]"
+						}
+					}],
+					application_context:{
+						shipping_preference:"NO_SHIPPING"
+					}
+
+				});
+			},
+			onApprove : function(data, actions) {
+				//buyer approves the payment
+				return actions.order.capture().then(function(details){
+					console.log(details);
+					orderId = details.id;
+					totalAmount =details.purchase_units[0].amount.value;
+					alert("Transaction completed: "+orderId+" total: "+totalAmount)
+				});
+			},
+			onCancel : function(data) {
+				//buyer cancels the payment
+				alert("payment cancelled by the buyer")
+			},
+			onError : function(err) {
+				//error that prevents buyer from doing checkout
+				alert("Something wrong happened")
+			}
+		}).render("#paypalButtonContainer");
 	</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.beastshop.checkout;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,7 +10,6 @@ public class CheckoutInfo {
 	private float shippingCostTotal;
 	private float paymentTotal;
 	private int deliverDays;
-	private Date deliverDate;
 	private boolean codSupported;
 	public float getProductCost() {
 		return productCost;
@@ -52,6 +52,11 @@ public class CheckoutInfo {
 	}
 	public void setCodSupported(boolean codSupported) {
 		this.codSupported = codSupported;
+	}
+	
+	public String getPaymentTotalForPaypal() {
+		DecimalFormat formatter = new DecimalFormat("###,###.##");
+		return formatter.format(paymentTotal);
 	}
 	
 	

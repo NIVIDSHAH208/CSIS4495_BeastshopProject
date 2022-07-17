@@ -29,6 +29,7 @@ import com.beastshop.customer.CustomerService;
 import com.beastshop.order.OrderService;
 import com.beastshop.setting.CurrencySettingBag;
 import com.beastshop.setting.EmailSettingBag;
+import com.beastshop.setting.PaymentSettingBag;
 import com.beastshop.setting.SettingService;
 import com.beastshop.shipping.ShippingRateService;
 import com.beastshop.shoppingcart.ShoppingCartService;
@@ -72,8 +73,15 @@ public class CheckoutController {
 
 		List<CartItem> cartItems = cartService.listCartItems(customer);
 		CheckoutInfo checkoutInfo = checkoutService.prepareCheckout(cartItems, shippingRate);
+		
+		String currencyCode = settingService.getCurrencyCode();
+		PaymentSettingBag paymentSetting = settingService.getPaymentSetting();
+		String paypalCliendId = paymentSetting.getClientId();
+		model.addAttribute("paypalCliendId",paypalCliendId);
+		model.addAttribute("currencyCode",currencyCode);
 		model.addAttribute("checkoutInfo", checkoutInfo);
 		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("customer",customer);
 
 		return "checkout/checkout";
 	}
