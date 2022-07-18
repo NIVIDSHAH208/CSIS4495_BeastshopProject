@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.permitAll()
 					.and().logout().permitAll().and().rememberMe().key("AbcdEfghIjkLmnOp-1234567890")
 					.tokenValiditySeconds(7*24*60*60);
+		http.headers().frameOptions().sameOrigin();
 
 	}
 
