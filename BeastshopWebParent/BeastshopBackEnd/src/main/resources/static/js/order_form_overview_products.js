@@ -40,6 +40,38 @@
  	
  });
  
+ function processFormBeforeSubmit(){
+ 	setCountryName();
+ 	removeThousandSeparator(fieldProductCost);
+ 	removeThousandSeparator(fieldSubtotal);
+ 	removeThousandSeparator(fieldShippingCost);
+ 	removeThousandSeparator(fieldTax);
+ 	removeThousandSeparator(fieldTotal);
+ 	
+ 	$(".cost-input").each(function(e){
+ 		removeThousandSeparator($(this));
+ 	});
+ 	$(".ship-input").each(function(e){
+ 		removeThousandSeparator($(this));
+ 	});
+ 	$(".price-input").each(function(e){
+ 		removeThousandSeparator($(this));
+ 	});
+ 	$(".subtotal-output").each(function(e){
+ 		removeThousandSeparator($(this));
+ 	});
+ }
+ 
+ function setCountryName(){
+ 	selectedCountry = $("#country option:selected");
+ 	countryName = selectedCountry.text();
+ 	$("#countryName").val(countryName);
+ }
+ 
+ function removeThousandSeparator(fieldRef){
+ 	fieldRef.val(fieldRef.val().replace(",",""));
+ }
+ 
  function updateOrderAmounts(){
  	//alert("apples");
  	totalCost=0.0;

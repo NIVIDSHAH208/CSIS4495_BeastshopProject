@@ -68,4 +68,12 @@ public class OrderService {
 	public List<Country> listAllCountries() {
 		return countryRepo.findAllByOrderByNameAsc();
 	}
+
+	public void save(Order orderInForm) {
+		Order orderInDb = repo.findById(orderInForm.getId()).get();
+		orderInForm.setOrderTime(orderInDb.getOrderTime());
+		orderInForm.setCustomer(orderInDb.getCustomer());
+		
+		repo.save(orderInForm);
+	}
 }

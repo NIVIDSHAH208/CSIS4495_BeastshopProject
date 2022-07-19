@@ -2,6 +2,7 @@ package com.beastshop.common.entity.order;
 
 import java.beans.Transient;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,12 +54,12 @@ public class Order extends AbstractAddress{
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<OrderDetail> orderDetails = new HashSet<>();
 	
 	
 	//using list as we want to maintain the order of the element, what is first, what is next
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("updatedTime DESC")
 	private List<OrderTrack> orderTracks = new ArrayList<>();
 	
@@ -257,6 +258,15 @@ public class Order extends AbstractAddress{
 	public String getDeliverDateOnForm() {
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormatter.format(this.deliverDate);
+	}
+	
+	public void setDeliverDateOnForm(String dateString) {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			this.deliverDate = dateFormatter.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

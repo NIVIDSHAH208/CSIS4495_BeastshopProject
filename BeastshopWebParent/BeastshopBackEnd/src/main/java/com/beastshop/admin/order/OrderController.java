@@ -1,6 +1,10 @@
 package com.beastshop.admin.order;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.beastshop.admin.paging.PagingAndSortingHelper;
@@ -16,6 +21,10 @@ import com.beastshop.admin.paging.PagingAndSortingParam;
 import com.beastshop.admin.setting.SettingService;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.order.Order;
+import com.beastshop.common.entity.order.OrderDetail;
+import com.beastshop.common.entity.order.OrderStatus;
+import com.beastshop.common.entity.order.OrderTrack;
+import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.entity.setting.Setting;
 
 @Controller
@@ -94,5 +103,77 @@ public class OrderController {
 			return defaultRedirectURL;
 		}
 	}
+	
+	@PostMapping("/order/save")
+	public String saveOrder(Order order, HttpServletRequest request, RedirectAttributes ra) {
+		String countryName = request.getParameter("countryName");
+		order.setCountry(countryName);
+		updateProductDetails(order, request);
+		updateOrderTracks(order, request);
+		
+		orderService.save(order);
+		ra.addFlashAttribute("message", "The order ID: "+order.getId()+" has been updated successfully");
+		return defaultRedirectURL;
+	}
+
+	private void updateOrderTracks(Order order, HttpServletRequest request) {
+		 String[] trackDates = request.getParameterValues("trackDate");
+		 String[] trackNotes = request.getParameterValues("trackNotes");
+		 String[] trackIds = request.getParameterValues("trackId");
+		 String[] trackStatuses = request.getParameterValues("trackStatus");
+		 
+		 List<OrderTrack> orderTracks = order.getOrderTracks();
+		 DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+		 for(int i=0; i<trackIds.length;i++) {
+			 OrderTrack trackRecord = new OrderTrack();
+			 Integer trackId = Integer.parseInt(trackIds[i]);
+			 if(trackId>0) {
+				 trackRecord.setId(trackId);
+			 }
+			 trackRecord.setOrder(order);
+			 trackRecord.setStatus(OrderStatus.valueOf(trackStatuses[i]));
+			 trackRecord.setNotes(trackNotes[i]);
+			 try {
+				trackRecord.setUpdatedTime(dateFormatter.parse(trackDates[i]));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			 
+			 orderTracks.add(trackRecord);
+		 }
+		 
+	}
+
+	private void updateProductDetails(Order order, HttpServletRequest request) {
+		String[] detailIds = request.getParameterValues("detailId");
+		String[] productIds = request.getParameterValues("productId");
+		String[] productDetailCosts = request.getParameterValues("productDetailCost");
+		String[] quantities = request.getParameterValues("quantity");
+		String[] productSubtotals = request.getParameterValues("productSubtotal");
+		String[] productPrices = request.getParameterValues("productPrice");
+		String[] productShipCosts = request.getParameterValues("productShipCost");
+		
+		Set<OrderDetail> orderDetails = order.getOrderDetails();
+		
+		for(int i=0; i<detailIds.length; i++) {
+
+			OrderDetail orderDetail = new OrderDetail();
+			Integer detailId = Integer.parseInt(detailIds[i]);
+			if(detailId>0) {
+				orderDetail.setId(detailId);
+			}
+			
+			orderDetail.setOrder(order);
+			orderDetail.setProduct(new Product(Integer.parseInt(productIds[i])));
+			orderDetail.setProductCost(Float.parseFloat(productDetailCosts[i]));
+			orderDetail.setSubtotal(Float.parseFloat(productSubtotals[i]));
+			orderDetail.setShippingCost(Float.parseFloat(productShipCosts[i]));
+			orderDetail.setQuantity(Integer.parseInt(quantities[i]));
+			orderDetail.setUnitPrice(Float.parseFloat(productPrices[i]));
+			orderDetails.add(orderDetail);
+		}
+		
+	}
+	
 	
 }

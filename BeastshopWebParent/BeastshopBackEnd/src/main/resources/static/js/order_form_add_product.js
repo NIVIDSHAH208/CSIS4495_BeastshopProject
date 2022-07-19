@@ -91,6 +91,7 @@
  	
  	htmlCode= `
  		<div class="border rounded p-1" id="${rowId}">
+ 				<input type="hidden" name="detailId" value="0" />
 				<input type="hidden" name="productId" value="${productId}" class="hiddenProductId" />
 					<div class="row">
 						<div class="col-1">
@@ -111,6 +112,7 @@
 							<tr>
 								<td>Product Cost:</td>
 								<td><input type="text" required
+									name="productDetailCost"
 									class="form-control m-1 cost-input" style="max-width: 140px"
 									rowNumber="${nextCount}"
 									value="${productCost}" /></td>
@@ -119,6 +121,7 @@
 								<td>Product quantity:</td>
 								<td><input type="number" step="1" min="1" max="5"
 									rowNumber="${nextCount}" required
+									name="quantity"
 									class="form-control m-1 quantity-input"
 									style="max-width: 140px" id="${quantityId}"
 									value="1" /></td>
@@ -126,6 +129,7 @@
 							<tr>
 								<td>Unit price:</td>
 								<td><input type="text" required
+									name="productPrice"
 									class="form-control m-1 price-input" style="max-width: 140px"
 									rowNumber="${nextCount}"
 									id="${priceId}"
@@ -134,6 +138,7 @@
 							<tr>
 								<td>Subtotal:</td>
 								<td><input type="text" readonly
+								name="productSubtotal"
 									class="form-control m-1 subtotal-output"
 									id="${subtotalId}" style="max-width: 140px"
 									value="${productPrice}" /></td>
@@ -141,6 +146,7 @@
 							<tr>
 								<td>Shipping Cost:</td>
 								<td><input type="text" required
+								name="productShipCost"
 									class="form-control m-1 ship-input" style="max-width: 140px"
 									rowNumber="${nextCount}"
 									value="${shippingCost}" /></td>
