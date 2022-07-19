@@ -1,5 +1,9 @@
 package com.beastshop.common.entity.order;
 
+import java.beans.Transient;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -65,6 +69,21 @@ public class OrderTrack extends IdBasedEntity {
 		this.order = order;
 	}
 	
+	@Transient
+	public String getUpdatedTimeOnForm() {
+		DateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+		return dateformatter.format(this.updatedTime);
+	}
+	
+	public void setUpdatedTimeOnForm(String dateString) {
+		DateFormat dateFormetter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+		try {
+			this.updatedTime = dateFormetter.parse(dateString);
+		}catch(ParseException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 	
 	
 }
