@@ -1,9 +1,10 @@
 /**
  * Author: Nivid
  */
+ var trackRecordCount;
  
  $(document).ready(function(){
- 
+ 	trackRecordCount =  $(".hiddenTrackId").length;
  	$("#trackList").on("click", ".linkRemoveTrack", function(e){
  		e.preventDefault();
  		deleteTrack($(this));
@@ -48,7 +49,8 @@
  
  
  function generateNewTrackRecord(){
- 	nextCount = $(".hiddenTrackId").length+1;
+ 	nextCount = trackRecordCount+1;
+ 	trackRecordCount++;
  	rowId = "rowTrack"+nextCount
  	emptyLineId = "emptyLine"+nextCount
  	trackNoteId = "trackNote"+nextCount
