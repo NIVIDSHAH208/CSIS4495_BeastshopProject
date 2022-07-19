@@ -1,5 +1,6 @@
 package com.beastshop.admin.order;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,6 +15,8 @@ import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.setting.country.CountryRepository;
 import com.beastshop.common.entity.Country;
 import com.beastshop.common.entity.order.Order;
+import com.beastshop.common.entity.order.OrderStatus;
+import com.beastshop.common.entity.order.OrderTrack;
 
 @Service
 public class OrderService {
@@ -75,5 +78,24 @@ public class OrderService {
 		orderInForm.setCustomer(orderInDb.getCustomer());
 		
 		repo.save(orderInForm);
+	}
+	
+	public void updateStatus(Integer orderId, String status) {
+		Order orderInDb = repo.findById(orderId).get();
+		OrderStatus statusToUpdate = OrderStatus.valueOf(status);
+		
+		if(!orderInDb.hasStatus(statusToUpdate)) {
+			List<OrderTrack> orderTracks = orderInDb.getOrderTracks();
+			
+			OrderTrack track = new OrderTrack();
+			track.setOrder(orderInDb);
+			track.setStatus(statusToUpdate);
+			track.setUpdatedTime(new Date());
+			track.setNotes(statusToUpdate.defaultDescription());
+			orderTracks.add(track);
+			
+			orderInDb.setStatus(statusToUpdate);
+			repo.save(orderInDb);
+		}
 	}
 }
