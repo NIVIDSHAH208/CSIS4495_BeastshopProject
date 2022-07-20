@@ -18,8 +18,10 @@ import com.beastshop.common.entity.Customer;
 import com.beastshop.common.entity.order.Order;
 import com.beastshop.common.entity.order.OrderDetail;
 import com.beastshop.common.entity.order.OrderStatus;
+import com.beastshop.common.entity.order.OrderTrack;
 import com.beastshop.common.entity.order.PaymentMethod;
 import com.beastshop.common.entity.product.Product;
+import com.beastshop.common.exception.OrderNotFoundException;
 
 
 @Service
@@ -86,5 +88,29 @@ public class OrderService {
 	
 	public Order getOrder(Integer id, Customer customer) {
 		return repo.findByIdAndCustomer(id, customer);
+	}
+	
+	//update order status to return requested
+	public void setOrderReturnRequested(OrderReturnRequest request, Customer customer) throws OrderNotFoundException {
+		Order order = repo.findByIdAndCustomer(request.getOrderId(), customer);
+		if(order==null) {
+			throw new OrderNotFoundException("Order Id: "+request.getOrderId()+" not found.");
+		}
+		if(order.isReturnRequested()) {
+			return;
+		}
+		OrderTrack track =new OrderTrack();
+		track.setOrder(order);
+		track.setUpdatedTime(new Date());
+		track.setStatus(OrderStatus.RETURN_REQUESTED);
+		String notes = "Reason: "+request.getReason();
+		if(!"".equals(request.getNote())) {
+			notes+=". "+request.getNote();
+		}
+		track.setNotes(notes);
+		order.getOrderTracks().add(track);
+		order.setStatus(OrderStatus.RETURN_REQUESTED);
+		
+		repo.save(order);
 	}
 }

@@ -28,6 +28,7 @@ import com.beastshop.common.entity.order.OrderStatus;
 import com.beastshop.common.entity.order.OrderTrack;
 import com.beastshop.common.entity.product.Product;
 import com.beastshop.common.entity.setting.Setting;
+import com.beastshop.common.exception.OrderNotFoundException;
 
 @Controller
 public class OrderController {

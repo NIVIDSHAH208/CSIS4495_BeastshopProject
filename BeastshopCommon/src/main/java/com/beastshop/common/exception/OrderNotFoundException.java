@@ -1,4 +1,4 @@
-package com.beastshop.admin.order;
+package com.beastshop.common.exception;
 
 public class OrderNotFoundException extends Exception {
 	public OrderNotFoundException(String message) {
