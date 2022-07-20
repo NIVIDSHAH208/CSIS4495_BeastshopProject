@@ -55,12 +55,14 @@
 						<td>
 							<div th:replace="fragments::format_currency(${order.total})">Total</div>
 						</td>
-						<td><span>[[${order.status}]]</span></td>
+						<td><span th:class="'textOrderStatus'+${order.id}">[[${order.status}]]</span></td>
 						<td><a class="fas fa-file-alt fa-2x icon-green linkDetail" th:href="@{'/orders/detail/'+${order.id}}"
-							title="View Details of the order"></a> <th:block
-								th:unless="${order.returnRequested}">
+							title="View Details of the order"></a> 
+							<th:block th:if="${order.returnRequested == false && order.delivered == true && order.returned == false}">
 								&nbsp;&nbsp;&nbsp;
-								<a class="fas fa-undo fa-2x icon-dark" href=""
+								<a class="fas fa-undo fa-2x icon-dark linkReturnOrder" href=""
+									th:orderId ="${order.id}"
+									th:classappend="'linkReturn'+${order.id}"
 									title="Return this order"></a>
 							</th:block></td>
 					</tr>
@@ -82,9 +84,11 @@
 									<div class="float-right">
 										<a class="fas fa-file-alt fa-2x icon-green linkDetail" th:href="@{'/orders/detail/'+${order.id}}"
 											title="View Details of the order"></a>
-										<th:block th:unless="${order.returnRequested}">
+										<th:block th:if="${order.returnRequested == false && order.delivered == true && order.returned == false}">
 												&nbsp;
-											<a class="fas fa-undo fa-2x icon-dark" href=""
+											<a class="fas fa-undo fa-2x icon-dark linkReturnOrder" href=""
+											th:orderId ="${order.id}"
+											th:classappend="'linkReturn'+${order.id}"
 												title="Return this order"></a>
 										</th:block>
 									</div>
@@ -100,17 +104,19 @@
 									<div th:replace="fragments::format_currency(${order.total})">Total</div>
 								</div>
 								<div class="col">
-									<span>[[${order.status}]]</span>
+									<span th:class="'textOrderStatus'+${order.id}">[[${order.status}]]</span>
 								</div>
 							</div>
 							<div><small><div th:replace="fragments::format_time(${order.orderTime})"></div></small></div>
 						</div>
 					</div>
 				</div>
+			<div>&nbsp;</div>
 			</th:block>
 		</div>
 		<div th:replace="fragments::pagination('/orders','orders')"></div>
 		<div>&nbsp;</div>
+		<div th:replace="orders/return_order_modal::content"></div>
 		
 		<div class="modal fade" id="orderDetailsModal">
 			<div class="modal-dialog modal-xl">
@@ -120,8 +126,11 @@
 		
 		<div th:replace="navigation::footer_menu"></div>
 	</div>
+	
 	<script type="text/javascript">
-		moduleURL = "[[@{/orders}]]"
+		contextPath = "[[@{/}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
 		
 		$(document).ready(function(){
 			handleDetailLink();
@@ -139,5 +148,6 @@
 			window.location=moduleURL;
 		}
 	</script>
+	<script  type="text/javascript" th:src="@{/js/return_order.js}"></script>
 </body>
 </html>
