@@ -56,7 +56,7 @@
 							<div th:replace="fragments::format_currency(${order.total})">Total</div>
 						</td>
 						<td><span>[[${order.status}]]</span></td>
-						<td><a class="fas fa-file-alt fa-2x icon-green" href=""
+						<td><a class="fas fa-file-alt fa-2x icon-green linkDetail" th:href="@{'/orders/detail/'+${order.id}}"
 							title="View Details of the order"></a> <th:block
 								th:unless="${order.returnRequested}">
 								&nbsp;&nbsp;&nbsp;
@@ -80,7 +80,7 @@
 								</div>
 								<div class="col">
 									<div class="float-right">
-										<a class="fas fa-file-alt fa-2x icon-green" href=""
+										<a class="fas fa-file-alt fa-2x icon-green linkDetail" th:href="@{'/orders/detail/'+${order.id}}"
 											title="View Details of the order"></a>
 										<th:block th:unless="${order.returnRequested}">
 												&nbsp;
@@ -112,10 +112,28 @@
 		<div th:replace="fragments::pagination('/orders','orders')"></div>
 		<div>&nbsp;</div>
 		
+		<div class="modal fade" id="orderDetailsModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+		
 		<div th:replace="navigation::footer_menu"></div>
 	</div>
 	<script type="text/javascript">
 		moduleURL = "[[@{/orders}]]"
+		
+		$(document).ready(function(){
+			handleDetailLink();
+		});
+		
+		function handleDetailLink(){
+			$(".linkDetail").on("click", function(e){
+				e.preventDefault();
+				$("#orderDetailsModal").modal('show').find('.modal-content').load($(this).attr('href'));
+			});
+			
+		}
 		
 		function clearFilter(){
 			window.location=moduleURL;

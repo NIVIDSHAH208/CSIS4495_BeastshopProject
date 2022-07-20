@@ -311,6 +311,11 @@ public class Order extends AbstractAddress{
 	}
 	
 	@Transient
+	public boolean isProcessing() {
+		return hasStatus(OrderStatus.PROCESSING);
+	}
+	
+	@Transient
 	public boolean isShipping() {
 		return hasStatus(OrderStatus.SHIPPING);
 	}
