@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.beastshop.common.Constants;
 import com.beastshop.common.entity.setting.Setting;
 
 
@@ -43,7 +44,7 @@ public class SettingFilter implements Filter {
 //			System.out.println(setting);
 			request.setAttribute(setting.getKey(), setting.getValue());
 		});
-		
+		request.setAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
 		chain.doFilter(request, response);
 
 	}

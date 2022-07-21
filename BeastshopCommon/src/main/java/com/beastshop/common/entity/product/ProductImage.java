@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.beastshop.common.Constants;
 import com.beastshop.common.entity.IdBasedEntity;
 
 @Entity
@@ -58,7 +59,7 @@ public class ProductImage extends IdBasedEntity{
 	}
 	@Transient
 	public String getImagePath() {
-		return "/product-images/"+product.getId()+"/extras/"+this.name;
+		return Constants.S3_BASE_URI+"/product-images/"+product.getId()+"/extras/"+this.name;
 	}
 	
 	

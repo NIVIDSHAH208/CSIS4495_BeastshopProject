@@ -12,6 +12,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.beastshop.common.Constants;
+
 @Entity
 @Table(name="categories")
 public class Category extends IdBasedEntity{
@@ -165,7 +167,7 @@ public class Category extends IdBasedEntity{
 		if(this.id==null) {
 			return "/images/image-thumbnail.png";
 		}
-		return "/category-images/"+this.id+"/"+this.image;
+		return Constants.S3_BASE_URI+"/category-images/"+this.id+"/"+this.image;
 	}
 	
 	@Transient

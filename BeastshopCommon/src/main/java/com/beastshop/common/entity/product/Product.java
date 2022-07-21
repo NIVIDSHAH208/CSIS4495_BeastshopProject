@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.beastshop.common.Constants;
 import com.beastshop.common.entity.Brand;
 import com.beastshop.common.entity.Category;
 import com.beastshop.common.entity.IdBasedEntity;
@@ -270,7 +271,7 @@ public class Product extends IdBasedEntity{
 		if (id == null || mainImage == null) {
 			return "/images/image-thumbnail.png";
 		}
-		return "/product-images/" + this.id + "/" + this.mainImage;
+		return Constants.S3_BASE_URI+"/product-images/" + this.id + "/" + this.mainImage;
 	}
 
 	public void addDetail(String name, String value) {
