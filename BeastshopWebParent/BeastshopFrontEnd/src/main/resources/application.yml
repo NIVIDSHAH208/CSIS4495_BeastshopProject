@@ -1,12 +1,15 @@
 server:
   port: 80
-  servlet:
-    context-path: /beastshop
+#  servlet:
+#    context-path: /beastshop
 spring:
   datasource:
     password: 2081999Nnsh@
     url: jdbc:mysql://localhost:3306/beastshopdb
     username: root
+    hiraki:
+      minimum-idle: 1
+      maximum-pool-size: 2
   jpa:
     hibernate:
       ddl-auto: update
