@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.beastshop.admin.AmazonS3Util;
 import com.beastshop.admin.FileUploadUtil;
 import com.beastshop.admin.paging.PagingAndSortingHelper;
 import com.beastshop.admin.paging.PagingAndSortingParam;
@@ -81,8 +82,9 @@ public class UserController {
 			user.setPhotos(fileName);
 			User savedUser = service.save(user);
 			String uploadDir = "user-photos/" + savedUser.getId();
-			FileUploadUtil.cleanDirectory(uploadDir);
-			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+			
+			AmazonS3Util.removeFolder(uploadDir);
+			AmazonS3Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
 		} else {
 			if (user.getPhotos().isEmpty()) {
 				user.setPhotos(null);
@@ -107,6 +109,9 @@ public class UserController {
 			RedirectAttributes redirectAttributes) {
 		try {
 			service.delete(id);
+			String userPhotosDir = "user-photos/"+id;
+			AmazonS3Util.removeFolder(userPhotosDir);
+			
 			redirectAttributes.addFlashAttribute("message", "User ID: " + id + " has been deleted successfully!");
 		} catch (UserNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message", ex.getMessage());
