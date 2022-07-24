@@ -56,6 +56,10 @@ public class Category extends IdBasedEntity{
 		
 	}
 	
+	
+	
+	
+
 	public Category(Integer id, String name, String alias) {
 		this.id = id;
 		this.name = name;

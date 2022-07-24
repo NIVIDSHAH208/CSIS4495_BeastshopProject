@@ -8,14 +8,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.beastshop.common.entity.Category;
+import com.beastshop.common.entity.IdBasedEntity;
 import com.beastshop.common.entity.product.Product;
 
 @Entity
 @Table(name = "order_details")
-public class OrderDetail {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class OrderDetail extends IdBasedEntity{
+	
 	
 	private int quantity;
 	private float productCost;
@@ -35,14 +35,29 @@ public class OrderDetail {
 	public OrderDetail() {
 		
 	}
+	
+	
 
-	public Integer getId() {
-		return id;
+	public OrderDetail(String categoryName, int quantity, float productCost, float shippingCost, float subtotal) {
+		this.product = new Product();
+		this.product.setCategory(new Category(categoryName));
+		this.quantity = quantity;
+		this.productCost = productCost;
+		this.shippingCost = shippingCost;
+		this.subtotal = subtotal;
+	}
+	
+	public OrderDetail( int quantity, String productName, float productCost, float shippingCost, float subtotal) {
+		this.product = new Product(productName);
+		this.quantity = quantity;
+		this.productCost = productCost;
+		this.shippingCost = shippingCost;
+		this.subtotal = subtotal;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+
+
+	
 
 	public int getQuantity() {
 		return quantity;
