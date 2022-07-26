@@ -39,7 +39,7 @@ function setSalesAmount(period, reportType, labelTotalItems){
 	$("#textAvgGrossSales"+reportType).text(formatCurrency(totalGrossSales/days));
 	$("#textAvgNetSales"+reportType).text(formatCurrency(totalNetSales/days));
 	$("#labelTotalItems"+reportType).text(labelTotalItems);
-	$("#textTotalItems"+reportType).text(totalOrders);
+	$("#textTotalItems"+reportType).text(totalItems);
 }
 
 function formatChartData(data, columnIndex1, columnIndex2){

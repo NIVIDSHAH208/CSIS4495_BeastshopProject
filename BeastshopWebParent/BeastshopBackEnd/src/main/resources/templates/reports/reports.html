@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="tab-pane p-3" id="category" role="tabpanel">
-					<h2>Sales by category</h2>
+					<div th:replace="reports/sales_report_fragment::content('_category')"></div>
 				</div>
 
 				<div class="tab-pane p-3" id="product" role="tabpanel">
@@ -69,6 +69,7 @@
 	<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/sales_report_common.js}"></script>
 	<script type="text/javascript" th:src="@{/js/sales_report_by_date.js}"></script>
+	<script type="text/javascript" th:src="@{/js/sales_report_by_category.js}"></script>
 	
 </body>
 
