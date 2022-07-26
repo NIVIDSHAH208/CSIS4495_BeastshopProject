@@ -74,21 +74,25 @@ function drawChart(period){
 	salesChart.draw(data, chartOptions);
 	$("#textTotalGrossSales").text("$"+$.number(totalGrossSales,2));
 	$("#textTotalNetSales").text("$"+$.number(totalNetSales,2));
-	days = getDays(period);
+	days = getDenominator(period);
 	$("#textAvgGrossSales").text("$"+$.number(totalGrossSales/days,2));
 	$("#textAvgNetSales").text("$"+$.number(totalNetSales/days,2));
 	$("#textTotalOrders").text(totalOrders);
 	
 }
 
-function getDays(period){
+function getDenominator(period){
 	if(period=="last_7_days") return 7;
 	if(period=="last_28_days") return 28;
+	if(period=="last_6_months") return 6;
+	if(period=="last_year") return 12;
 	return 7;
 }
 
 function getChartTitle(period){
 	if(period=="last_7_days") return "Sales in last 7 days";
 	if(period=="last_28_days") return "Sales in last 28 days";
+	if(period=="last_6_months") return "Sales in last 6 months";
+	if(period=="last_year") return "Sales in last year";
 	return "";
 }
