@@ -3,29 +3,22 @@
 var data, chartOptions, totalGrossSales, totalNetSales, totalOrders;
 
 $(document).ready(function(){
-	$(".button-sales-by-date").on("click", function(){
-	
-		$(".button-sales-by-date").each(function(e){
-			$(this).removeClass('btn-primary').addClass("btn-light");
-		});
-		$(this).removeClass('btn-light').addClass("btn-primary")
-	
-		period = $(this).attr("period")
-		loadSalesReportByDate(period);
-	});
+	setupButtonEventHandlers("_date",loadSalesReportByDate);
 });
 
 function loadSalesReportByDate(period){
 	requestURL = contextPath + "reports/sales_by_date/"+period;
 	
 	$.get(requestURL, function(responseJSON){
-		prepareChartData(responseJSON)
-		customizeChart(period)
-		drawChart(period);
+		prepareChartDataForSalesReportByDate(responseJSON)
+		customizeChartForSalesReportByDate(period)
+		formatChartData(data, 1, 2)
+		drawChartForSalesReportByDate(period);
+		setSalesAmount(period, "_date", "Total Items")
 	});
 }
 
-function prepareChartData(responseJSON){
+function prepareChartDataForSalesReportByDate(responseJSON){
 	data = new google.visualization.DataTable();
 	data.addColumn('string','Date');
 	data.addColumn('number','Gross sales');
@@ -44,7 +37,7 @@ function prepareChartData(responseJSON){
 	});
 }
 
-function customizeChart(period){
+function customizeChartForSalesReportByDate(period){
 	chartOptions = {
 		title: getChartTitle(period),
 		'height':360,
@@ -61,47 +54,12 @@ function customizeChart(period){
 		}
 	};
 	
-	var formatter = new google.visualization.NumberFormat({
-		prefix: prefixCurrencySymbol,
-		suffix: suffixCurrencySymbol,
-		decimalSymbol:decimalPointType,
-		groupingSymbol: thousandsPointType,
-		fractionDigits: decimalDigits
-	});
 	
-	formatter.format(data,1);
-	formatter.format(data,2);
 }
 
-function drawChart(period){
+function drawChartForSalesReportByDate(){
 	var salesChart = new google.visualization.ColumnChart(document.getElementById("chart_sales_by_date"));
 	salesChart.draw(data, chartOptions);
-	$("#textTotalGrossSales").text(formatCurrency(totalGrossSales));
-	$("#textTotalNetSales").text(formatCurrency(totalNetSales));
-	days = getDenominator(period);
-	$("#textAvgGrossSales").text(formatCurrency(totalGrossSales/days));
-	$("#textAvgNetSales").text(formatCurrency(totalNetSales/days));
-	$("#textTotalOrders").text(totalOrders);
 	
 }
 
-function formatCurrency(amount){
-	formattedAmount = $.number(amount, decimalDigits, decimalPointType, thousandsPointType);
-	return prefixCurrencySymbol+formattedAmount+suffixCurrencySymbol;
-}
-
-function getDenominator(period){
-	if(period=="last_7_days") return 7;
-	if(period=="last_28_days") return 28;
-	if(period=="last_6_months") return 6;
-	if(period=="last_year") return 12;
-	return 7;
-}
-
-function getChartTitle(period){
-	if(period=="last_7_days") return "Sales in last 7 days";
-	if(period=="last_28_days") return "Sales in last 28 days";
-	if(period=="last_6_months") return "Sales in last 6 months";
-	if(period=="last_year") return "Sales in last year";
-	return "";
-}

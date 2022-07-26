@@ -17,15 +17,15 @@ public class ReportRestController {
 		
 		switch (period) {
 		case "last_7_days": 
-			return masterOrderReportService.getReportDataLast7Days();
+			return masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
 		case "last_28_days": 
-			return masterOrderReportService.getReportDataLast28Days();
+			return masterOrderReportService.getReportDataLast28Days(ReportType.DAY);
 		case "last_6_months": 
-			return masterOrderReportService.getReportDataLast6Months();
+			return masterOrderReportService.getReportDataLast6Months(ReportType.MONTH);
 		case "last_year": 
-			return masterOrderReportService.getReportDataLastYear();
+			return masterOrderReportService.getReportDataLastYear(ReportType.MONTH);
 		default:
-			return masterOrderReportService.getReportDataLast7Days();
+			return masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
 		}
 		
 	}
