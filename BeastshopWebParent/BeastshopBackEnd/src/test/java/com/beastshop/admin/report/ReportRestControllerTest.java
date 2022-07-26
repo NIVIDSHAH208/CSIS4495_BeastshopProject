@@ -38,4 +38,11 @@ public class ReportRestControllerTest {
 		String requestURL = "/reports/category/last_7_days";
 		mockMvc.perform(get(requestURL)).andExpect(status().isOk()).andDo(print());
 	}
+	
+	@Test
+	@WithMockUser(username = "user1", password = "password", authorities = {"Salesperson"})
+	public void testGetReportDataByProduct() throws Exception {
+		String requestURL = "/reports/product/last_7_days";
+		mockMvc.perform(get(requestURL)).andExpect(status().isOk()).andDo(print());
+	}
 }
